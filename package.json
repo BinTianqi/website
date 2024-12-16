@@ -1,0 +1,8 @@
+{
+  "name": "seclog",
+  "type": "module",
+  "scripts": {},
+  "dependencies": {
+    "vite": "^6.0.1"
+  }
+}

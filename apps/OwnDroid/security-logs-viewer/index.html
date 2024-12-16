@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Security logs viewer</title>
+    <meta name="viewport" content="width=device-width">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="./index.css"/>
+    <script src="./index.js" type="module"></script>
+</head>
+<body>
+    <div id="topbar">
+        <div id="pager">
+            <button id="previous-page" class="icon-button" disabled>
+                <img src="/res/icons/keyboard_arrow_left.svg"/>
+            </button>
+            <a>0 / 0</a>
+            <button id="next-page" class="icon-button" disabled>
+                <img src="/res/icons/keyboard_arrow_right.svg"/>
+            </button>
+        </div>
+        <div id="icons-row">
+            <button id="open-file-btn" class="icon-button">
+                <img src="/res/icons/file_open.svg"/>
+            </button>
+            <button id="open-filters-btn" class="icon-button">
+                <img src="/res/icons/filter.svg"/>
+            </button>
+            <button id="open-settings-btn" class="icon-button">
+                <img src="/res/icons/settings.svg"/>
+            </button>
+        </div>
+    </div>
+    <div id="table-box">
+        <table class="hidden">
+            <thead>
+                <tr>
+                    <th class="t-id">ID</th>
+                    <th str="th_time" class="t-time">Time</th>
+                    <th str="th_level" class="t-level">Level</th>
+                    <th str="th_event" class="t-event">Event</th>
+                    <th str="th_details" class="t-details">Details</th>
+                </tr>
+	    	</thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <dialog id="filters">
+        <div>
+            <h2 str="filters">Filters</h2>
+            <div id="displayed-columns">
+                <input type="checkbox" name="id-checkbox" id="id-checkbox"/>
+                <label for="id-checkbox">ID</label> 
+                <input type="checkbox" name="time-checkbox" id="time-checkbox"/>
+                <label str="th_time" for="time-checkbox">Time</label>
+                <input type="checkbox" name="level-checkbox" id="level-checkbox"/>
+                <label str="th_level" for="level-checkbox">Level</label> 
+                <input type="checkbox" name="event-checkbox" id="event-checkbox"/>
+                <label str="th_event" for="event-checkbox">Event</label>
+                <input type="checkbox" name="details-checkbox" id="details-checkbox"/>
+                <label str="th_details" for="details-checkbox">Details</label>
+            </div>
+            <div class="buttons-row">
+                <button str="cancel" class="close-dialog-btn">Cancel</button>
+                <button str="apply" class="apply-btn">Apply</button>
+            </div>
+        </div>
+    </dialog>
+    <dialog id="settings">
+        <div>
+            <h2 str="settings">Settings</h2>
+            <div>
+                <label str="language" for="select-lang">Select language</label>
+                <select name="select-lang" id="select-lang">
+                    <option value="default">Default</option>
+                    <option value="en">English</option>
+                    <option value="zh-CN">简体中文</option>
+                </select>
+            </div>
+            <div>
+            <label str="rows_per_page" for="rows-per-page">Rows per page (1~1000)</label>
+            <input type="number" min="1" max="1000" name="rows-per-page" id="rows-per-page" required/>
+            </div>
+            <div class="buttons-row">
+                <button str="cancel" class="close-dialog-btn">Cancel</button>
+                <button str="apply" class="apply-btn">Apply</button>
+            </div>
+        </div>
+    </dialog>
+    <dialog id="pager-dialog">
+        <div>
+            <div>
+                <label str="page_number" for="page-number">Page number:</label>
+                <input type="number" name="page-number" id="page-number" min="1" max="0" required/>
+            </div>
+            <div class="buttons-row">
+                <button str="cancel" class="close-dialog-btn">Cancel</button>
+                <button str="jump" class="apply-btn" disabled>Jump</button>
+            </div>
+        </div>
+    </dialog>
+    <dialog id="open-file">
+        <div>
+            <input type="file" accept="application/json"/>
+            <div class="buttons-row">
+                <button str="cancel" class="close-dialog-btn">Cancel</button>
+            </div>
+        </div>
+    </dialog>
+</body>
+</html>
