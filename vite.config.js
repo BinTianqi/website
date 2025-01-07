@@ -2,7 +2,7 @@ export default {
     build: {
         rollupOptions: {
             input: {
-                "security-logs-viewer": "apps/OwnDroid/security-logs-viewer/index.html"
+                "OwnDroid": "apps/OwnDroid/index.html"
             }
         },
         assetsInlineLimit: 0,

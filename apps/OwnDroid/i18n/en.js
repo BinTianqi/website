@@ -6,10 +6,19 @@ export default {
     cancel: "Cancel",
     apply: "Apply",
 
+    security_logs_viewer: "Security logs viewer",
+    network_logs_viewer: "Network logs viewer",
+
+    view_security_logs: "View security logs",
+    view_network_logs: "View network logs",
+
     settings: "Settings",
     language: "Language",
     rows_per_page: "Rows per page (1~1000)",
     filters: "Filters",
+    security_logs: "Security logs",
+    network_logs: "Network logs",
+
     page_number: "Page number",
     jump: "Jump",
 
@@ -17,6 +26,9 @@ export default {
     th_level: "Level",
     th_event: "Event",
     th_details: "Details",
+    th_package: "Package",
+    th_type: "Type",
+    connect: "Connect",
 
     t210002: "ADB shell command",
     t210001: "ADB shell interactive",
@@ -94,5 +106,6 @@ export default {
     password_expiration_timeout: "Password expiration timeout: ",
     password_history_length: "Password history length: ",
     user_restriction: "User restriction: ",
-    event: "Event: "
+    event: "Event: ",
+    file_path: "File path: "
 }

@@ -6,10 +6,19 @@ export default {
     cancel: "取消",
     apply: "应用",
 
+    security_logs_viewer: "安全日志查看器",
+    network_logs_viewer: "网络日志查看器",
+
+    view_security_logs: "查看安全日志",
+    view_network_logs: "查看网络日志",
     settings: "设置",
     language: "语言",
     rows_per_page: "每页行数 (1~1000)",
+
     filters: "过滤器",
+    security_logs: "安全日志",
+    network_logs: "网络日志",
+
     page_number: "页数",
     jump: "跳转",
 
@@ -17,6 +26,9 @@ export default {
     th_level: "等级",
     th_event: "事件",
     th_details: "详情",
+    th_package: "应用包",
+    th_type: "类型",
+    connect: "连接",
 
     t210002: "ADB shell 命令",
     t210001: "ADB shell 交互",
@@ -94,5 +106,6 @@ export default {
     password_expiration_timeout: "密码失效超时: ",
     password_history_length: "密码历史长度: ",
     user_restriction: "用户限制: ",
-    event: "事件: "
+    event: "事件: ",
+    file_path: "文件路径: "
 }

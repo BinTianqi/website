@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OwnDroid</title>
+    <meta name="viewport" content="width=device-width">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="./index.css"/>
+    <script src="./index.js" type="module"></script>
+</head>
+<body>
+    <div id="topbar">
+        <a>OwnDroid</a>
+        <button id="home-btn" class="hidden icon-button">
+            <img src="/res/icons/home.svg"/>
+        </button>
+        <div id="pager" class="hidden">
+            <button id="previous-page" class="icon-button" disabled>
+                <img src="/res/icons/keyboard_arrow_left.svg"/>
+            </button>
+            <a>0 / 0</a>
+            <button id="next-page" class="icon-button" disabled>
+                <img src="/res/icons/keyboard_arrow_right.svg"/>
+            </button>
+        </div>
+        <div id="icons-row">
+            <button id="open-filters-btn" class="hidden icon-button">
+                <img src="/res/icons/filter.svg"/>
+            </button>
+            <button id="open-settings-btn" class="icon-button">
+                <img src="/res/icons/settings.svg"/>
+            </button>
+        </div>
+    </div>
+    <div id="content">
+        <div id="greeting">
+            <div>
+                <label for="choose-security-logs-file" str="view_security_logs">View security logs</label>
+                <input type="file" id="choose-security-logs-file" accept=".json,application/json"></input>
+            </div>
+            <div>
+                <label for="choose-network-logs-file" str="view_network_logs">View network logs</label>
+                <input type="file" id="choose-network-logs-file" accept=".json,application/json"></input>
+            </div>
+        </div>
+        <table class="security-logs hidden">
+            <thead>
+                <tr>
+                    <th class="id">ID</th>
+                    <th str="th_time" class="time">Time</th>
+                    <th str="th_level" class="level">Level</th>
+                    <th str="th_event" class="event">Event</th>
+                    <th str="th_details" class="details">Details</th>
+                </tr>
+	    	</thead>
+            <tbody></tbody>
+        </table>
+        <table class="network-logs hidden">
+            <thead>
+                <tr>
+                    <th class="id">ID</th>
+                    <th str="th_time" class="time">Time</th>
+                    <th str="th_package" class="package">Package</th>
+                    <th str="th_type" class="type">Type</th>
+                    <th str="th_details" class="details">Details</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <dialog id="filters">
+        <div>
+            <h2 str="filters">Filters</h2>
+            <div class="security-logs hidden">
+                <h3>Columns</h3>
+                <div class="columns">
+                    <div>
+                        <input type="checkbox" name="id" id="s-id-checkbox"/>
+                        <label for="s-id-checkbox">ID</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" name="time" id="s-time-checkbox"/>
+                        <label str="th_time" for="s-time-checkbox">Time</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" name="level" id="s-level-checkbox"/>
+                        <label str="th_level" for="s-level-checkbox">Level</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" name="event" id="s-event-checkbox"/>
+                        <label str="th_event" for="s-event-checkbox">Event</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" name="details" id="s-details-checkbox"/>
+                        <label str="th_details" for="s-details-checkbox">Details</label>
+                    </div>
+                </div>
+                <div class="levels">
+                    <div>
+                        <input type="checkbox" name="info" id="s-info-checkbox"></input>
+                        <label for="s-info-checkbox">info</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" name="warning" id="s-warning-checkbox"></input>
+                        <label for="s-warning-checkbox">warning</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" name="error" id="s-error-checkbox"></input>
+                        <label for="s-error-checkbox">error</label>
+                    </div>
+                </div>
+            </div>
+            <div class="network-logs hidden">
+                <h3 str="network_logs">Network logs</h3>
+                <div class="columns">
+                    <div>
+                        <input type="checkbox" name="id" id="n-id-checkbox"/>
+                        <label for="n-id-checkbox">ID</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" name="time" id="n-time-checkbox"/>
+                        <label str="th_time" for="n-time-checkbox">Time</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" name="package" id="n-package-checkbox"/>
+                        <label str="th_package" for="n-package-checkbox">Package</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" name="type" id="n-type-checkbox"/>
+                        <label str="th_type" for="n-type-checkbox">Type</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" name="details" id="n-details-checkbox"/>
+                        <label str="th_details" for="n-details-checkbox">Details</label>
+                    </div>
+                </div>
+                <div class="types">
+                    <div>
+                        <input type="checkbox" name="connect" id="n-connect-checkbox"></input>
+                        <label for="n-connect-checkbox" str="connect">Connect</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" name="dns" id="n-dns-checkbox"></input>
+                        <label for="n-dns-checkbox">DNS</label>
+                    </div>
+                </div>
+            </div>
+            <div class="buttons-row">
+                <button str="cancel" class="close-dialog-btn">Cancel</button>
+                <button str="apply" class="apply-btn">Apply</button>
+            </div>
+        </div>
+    </dialog>
+    <dialog id="settings">
+        <div>
+            <h2 str="settings">Settings</h2>
+            <div>
+                <label str="language" for="select-lang">Select language</label>
+                <select name="select-lang" id="select-lang">
+                    <option value="default">Default</option>
+                    <option value="en">English</option>
+                    <option value="zh-CN">简体中文</option>
+                </select>
+            </div>
+            <div>
+                <label str="rows_per_page" for="rows-per-page">Rows per page (1~1000)</label>
+                <input type="number" min="1" max="1000" name="rows_per_page" id="rows-per-page" required/>
+            </div>
+            <div class="buttons-row">
+                <button str="cancel" class="close-dialog-btn">Cancel</button>
+                <button str="apply" class="apply-btn">Apply</button>
+            </div>
+        </div>
+    </dialog>
+    <dialog id="pager-dialog">
+        <div>
+            <div>
+                <label str="page_number" for="page-number">Page number:</label>
+                <input type="number" name="page-number" id="page-number" min="1" max="0" required/>
+            </div>
+            <div class="buttons-row">
+                <button str="cancel" class="close-dialog-btn">Cancel</button>
+                <button str="jump" class="apply-btn" disabled>Jump</button>
+            </div>
+        </div>
+    </dialog>
+</body>
+</html>

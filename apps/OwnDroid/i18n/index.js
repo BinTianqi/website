@@ -13,6 +13,10 @@ export function applyLang() {
         it.innerText = str[it.getAttribute("str")]
     })
 }
+
+export function getStr() {
+    return str
+}
+
 applyLang()
-export default str
 
