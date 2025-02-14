@@ -11,6 +11,7 @@ export default {
 
     view_security_logs: "查看安全日志",
     view_network_logs: "查看网络日志",
+    open_file: "打开文件",
     settings: "设置",
     language: "语言",
     rows_per_page: "每页行数 (1~1000)",

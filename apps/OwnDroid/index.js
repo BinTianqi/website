@@ -1,5 +1,6 @@
 import { applyLang, getStr } from "./i18n"
-import { esc } from "../../utils.js"
+import { esc } from "../../utils"
+import { SvgIconButton } from "../../components"
 
 let str = {}
 
@@ -46,21 +47,27 @@ function initializePage() {
 
 function initializeGreeting() {
     const greeting = document.getElementById("greeting")
-    const inputSecurityLogs = document.getElementById("choose-security-logs-file")
-    const inputNetworkLogs = document.getElementById("choose-network-logs-file")
-    inputSecurityLogs.addEventListener("change", async () => {
-        const [file] = inputSecurityLogs.files
-        allLogs = JSON.parse(await file.text())
-        logs = allLogs
-        reloadBodyContent(1)
-        inputSecurityLogs.value = ""
+    greeting.querySelector(".security-logs > button").addEventListener("click", () => {
+        const input = document.createElement("input")
+        input.type = "file"
+        input.addEventListener("change", async () => {
+            const [file] = input.files
+            allLogs = JSON.parse(await file.text())
+            logs = allLogs
+            reloadBodyContent(1)
+        })
+        input.click()
     })
-    inputNetworkLogs.addEventListener("change", async () => {
-        const [file] = inputNetworkLogs.files
-        allLogs = JSON.parse(await file.text())
-        logs = allLogs
-        reloadBodyContent(2)
-        inputNetworkLogs.value = ""
+    greeting.querySelector(".network-logs button").addEventListener("click", () => {
+        const input = document.createElement("input")
+        input.type = "file"
+        input.addEventListener("change", async () => {
+            const [file] = inputNetworkLogs.files
+            allLogs = JSON.parse(await file.text())
+            logs = allLogs
+            reloadBodyContent(2)
+        })
+        input.click()
     })
 }
 
@@ -462,4 +469,6 @@ function loadNetworkLogs() {
 document.addEventListener("DOMContentLoaded", () => {
     initializePage()
 })
+
+customElements.define("svg-icon-button", SvgIconButton, { extends: "button" })
 

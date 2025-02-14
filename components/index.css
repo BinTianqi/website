@@ -1,0 +1,29 @@
+button[is=svg-icon-button] {
+    background-color: transparent;
+    border: 0;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    padding-inline: 0;
+    padding-block: 0;
+    > svg {
+        margin: 8px;
+        fill: var(--md-sys-color-on-surface-variant);
+    }
+}
+button[is=svg-icon-button]:disabled {
+    opacity: 60%;
+}
+button[is=svg-icon-button]:not(:disabled):hover {
+    cursor: pointer;
+    background-color: color-mix(in srgb, var(--md-sys-color-on-surface-variant) 8%, transparent);
+    > svg {
+        fill: color-mix(in srgb, var(--md-sys-color-on-surface-variant) 8%, var(--md-sys-color-on-surface-variant));
+    }
+}
+button[is=svg-icon-button]:not(:disabled):active {
+    background-color: color-mix(in srgb, var(--md-sys-color-on-surface-variant) 10%, transparent);
+    > svg {
+        fill: color-mix(in srgb, var(--md-sys-color-on-surface-variant) 10%, var(--md-sys-color-on-surface-variant));
+    }
+}

@@ -11,6 +11,7 @@ export default {
 
     view_security_logs: "View security logs",
     view_network_logs: "View network logs",
+    open_file: "Open file",
 
     settings: "Settings",
     language: "Language",

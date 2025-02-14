@@ -5,41 +5,33 @@
     <meta name="viewport" content="width=device-width">
     <meta charset="UTF-8">
     <link rel="stylesheet" href="./index.css"/>
+    <link rel="stylesheet" href="/theme/m3.css"/>
+    <link rel="stylesheet" href="/components/buttons.css"/>
     <script src="./index.js" type="module"></script>
 </head>
 <body>
-    <div id="topbar">
+    <div id="topbar" class="hidden">
         <a>OwnDroid</a>
-        <button id="home-btn" class="hidden icon-button">
-            <img src="/res/icons/home.svg"/>
-        </button>
+        <button is="svg-icon-button" id="home-btn" class="hidden" src="/res/icons/home.svg"></button>
         <div id="pager" class="hidden">
-            <button id="previous-page" class="icon-button" disabled>
-                <img src="/res/icons/keyboard_arrow_left.svg"/>
-            </button>
+            <button is="svg-icon-button" id="previous-page" src="/res/icons/keyboard_arrow_left.svg" disabled></button>
             <a>0 / 0</a>
-            <button id="next-page" class="icon-button" disabled>
-                <img src="/res/icons/keyboard_arrow_right.svg"/>
-            </button>
+            <button is="svg-icon-button" id="next-page" src="/res/icons/keyboard_arrow_right.svg" disabled></button>
         </div>
         <div id="icons-row">
-            <button id="open-filters-btn" class="hidden icon-button">
-                <img src="/res/icons/filter.svg"/>
-            </button>
-            <button id="open-settings-btn" class="icon-button">
-                <img src="/res/icons/settings.svg"/>
-            </button>
+            <button is="svg-icon-button" id="open-filters-btn" class="hidden" src="/res/icons/filter.svg"></button>
+            <button is="svg-icon-button" id="open-settings-btn" src="/res/icons/settings.svg"></button>
         </div>
     </div>
     <div id="content">
         <div id="greeting">
-            <div>
-                <label for="choose-security-logs-file" str="view_security_logs">View security logs</label>
-                <input type="file" id="choose-security-logs-file" accept=".json,application/json"></input>
+            <div class="security-logs">
+                <a str="view_security_logs">View security logs</a>
+                <button str="open_file" class="filled">Open file</button>
             </div>
-            <div>
-                <label for="choose-network-logs-file" str="view_network_logs">View network logs</label>
-                <input type="file" id="choose-network-logs-file" accept=".json,application/json"></input>
+            <div class="network-logs">
+                <a str="view_network_logs">View network logs</a>
+                <button str="open_file" class="filled">Open file</button>
             </div>
         </div>
         <table class="security-logs hidden">
@@ -166,8 +158,8 @@
                 <input type="number" min="1" max="1000" name="rows_per_page" id="rows-per-page" required/>
             </div>
             <div class="buttons-row">
-                <button str="cancel" class="close-dialog-btn">Cancel</button>
-                <button str="apply" class="apply-btn">Apply</button>
+                <button str="cancel" class="tonal close-dialog-btn">Cancel</button>
+                <button str="apply" class="filled apply-btn">Apply</button>
             </div>
         </div>
     </dialog>
@@ -178,8 +170,8 @@
                 <input type="number" name="page-number" id="page-number" min="1" max="0" required/>
             </div>
             <div class="buttons-row">
-                <button str="cancel" class="close-dialog-btn">Cancel</button>
-                <button str="jump" class="apply-btn" disabled>Jump</button>
+                <button str="cancel" class="tonal close-dialog-btn">Cancel</button>
+                <button str="jump" class="filled apply-btn" disabled>Jump</button>
             </div>
         </div>
     </dialog>
