@@ -19,6 +19,9 @@ export default {
     filters: "过滤器",
     security_logs: "安全日志",
     network_logs: "网络日志",
+    columns: "列",
+    levels: "等级",
+    types: "类型",
 
     page_number: "页数",
     jump: "跳转",

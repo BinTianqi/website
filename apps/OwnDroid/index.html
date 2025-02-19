@@ -63,82 +63,84 @@
         <div>
             <h2 str="filters">Filters</h2>
             <div class="security-logs hidden">
-                <h3>Columns</h3>
+                <h3 str="columns">Columns</h3>
                 <div class="columns">
-                    <div>
-                        <input type="checkbox" name="id" id="s-id-checkbox"/>
+                    <div class="checkbox">
+                        <input type="checkbox" name="id" id="s-id-checkbox"></input>
                         <label for="s-id-checkbox">ID</label>
                     </div>
-                    <div>
+                    <div class="checkbox">
                         <input type="checkbox" name="time" id="s-time-checkbox"/>
                         <label str="th_time" for="s-time-checkbox">Time</label>
                     </div>
-                    <div>
+                    <div class="checkbox">
                         <input type="checkbox" name="level" id="s-level-checkbox"/>
                         <label str="th_level" for="s-level-checkbox">Level</label>
                     </div>
-                    <div>
+                    <div class="checkbox">
                         <input type="checkbox" name="event" id="s-event-checkbox"/>
                         <label str="th_event" for="s-event-checkbox">Event</label>
                     </div>
-                    <div>
+                    <div class="checkbox">
                         <input type="checkbox" name="details" id="s-details-checkbox"/>
                         <label str="th_details" for="s-details-checkbox">Details</label>
                     </div>
                 </div>
+                <h3 str="levels">Levels</h3>
                 <div class="levels">
-                    <div>
+                    <div class="checkbox">
                         <input type="checkbox" name="info" id="s-info-checkbox"></input>
                         <label for="s-info-checkbox">info</label>
                     </div>
-                    <div>
+                    <div class="checkbox">
                         <input type="checkbox" name="warning" id="s-warning-checkbox"></input>
                         <label for="s-warning-checkbox">warning</label>
                     </div>
-                    <div>
+                    <div class="checkbox">
                         <input type="checkbox" name="error" id="s-error-checkbox"></input>
                         <label for="s-error-checkbox">error</label>
                     </div>
                 </div>
             </div>
             <div class="network-logs hidden">
-                <h3 str="network_logs">Network logs</h3>
+                <h3 str="columns">Columns</h3>
                 <div class="columns">
-                    <div>
+                    <div class="checkbox">
                         <input type="checkbox" name="id" id="n-id-checkbox"/>
                         <label for="n-id-checkbox">ID</label>
                     </div>
-                    <div>
+                    <div class="checkbox">
                         <input type="checkbox" name="time" id="n-time-checkbox"/>
                         <label str="th_time" for="n-time-checkbox">Time</label>
                     </div>
-                    <div>
+                    <div class="checkbox">
                         <input type="checkbox" name="package" id="n-package-checkbox"/>
                         <label str="th_package" for="n-package-checkbox">Package</label>
                     </div>
-                    <div>
+                    <div class="checkbox">
                         <input type="checkbox" name="type" id="n-type-checkbox"/>
                         <label str="th_type" for="n-type-checkbox">Type</label>
                     </div>
-                    <div>
+                    <div class="checkbox">
                         <input type="checkbox" name="details" id="n-details-checkbox"/>
                         <label str="th_details" for="n-details-checkbox">Details</label>
                     </div>
                 </div>
+                <h3 str="types">Types</h3>
                 <div class="types">
-                    <div>
+                    <div class="checkbox">
                         <input type="checkbox" name="connect" id="n-connect-checkbox"></input>
                         <label for="n-connect-checkbox" str="connect">Connect</label>
                     </div>
-                    <div>
+                    <div class="checkbox">
                         <input type="checkbox" name="dns" id="n-dns-checkbox"></input>
                         <label for="n-dns-checkbox">DNS</label>
                     </div>
                 </div>
             </div>
             <div class="buttons-row">
-                <button str="cancel" class="close-dialog-btn">Cancel</button>
-                <button str="apply" class="apply-btn">Apply</button>
+                <button str="cancel" class="tonal close-dialog-btn">Cancel</button>
+                <button str="apply" class="filled apply-btn">Apply</button>
             </div>
         </div>
     </dialog>

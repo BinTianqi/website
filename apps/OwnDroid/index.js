@@ -324,16 +324,22 @@ function loadSecurityLogs() {
         tEvent.innerText = str[`t${log.tag}`]
         const tDetails = document.createElement("td")
         tDetails.classList.add("details")
-        tDetails.innerText = parseSecurityLogData(log.tag, log.data)
+        tDetails.append(...parseSecurityLogData(log.tag, log.data))
         row.append(tId, tTime, tLevel, tEvent, tDetails)
         tbody.appendChild(row)
     }
 }
 
 function parseSecurityLogData(tag, data) {
+    const elements = []
     var r = ""
-    if(tag == 210002) r = str.command + "\n" + data
-    else if(tag == 210005) r =
+    if(tag == 210002) {
+        const code = document.createElement("code")
+        code.innerText = data
+        const pre = document.createElement("pre")
+        pre.append(code)
+        elements.push(pre)
+    } else if(tag == 210005) r =
         str.process_name + esc(data.name) + "\n" +
         str.start_time + data.time.toString() + "\n" +
         "UID: " + data.uid.toString() + "\n" +
@@ -436,7 +442,13 @@ function parseSecurityLogData(tag, data) {
         "BSSID: " + data.bssid +
         (data.reason ? br + data.reason : "")
     else r = ""
-    return r
+    if(r == "") return elements
+    else {
+        const div = document.createElement("div")
+        div.innerText = r
+        elements.push(div)
+        return elements
+    }
 }
 
 function loadNetworkLogs() {

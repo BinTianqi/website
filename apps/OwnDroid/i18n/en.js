@@ -19,6 +19,9 @@ export default {
     filters: "Filters",
     security_logs: "Security logs",
     network_logs: "Network logs",
+    columns: "Columns",
+    levels: "Levels",
+    types: "Types",
 
     page_number: "Page number",
     jump: "Jump",

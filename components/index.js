@@ -1,4 +1,5 @@
 import "./index.css"
+import "./checkbox.css"
 export class SvgIconButton extends HTMLButtonElement {
     constructor() {
         super()
