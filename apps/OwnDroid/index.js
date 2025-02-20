@@ -62,13 +62,19 @@ function initializeGreeting() {
         const input = document.createElement("input")
         input.type = "file"
         input.addEventListener("change", async () => {
-            const [file] = inputNetworkLogs.files
+            const [file] = input.files
             allLogs = JSON.parse(await file.text())
             logs = allLogs
             reloadBodyContent(2)
         })
         input.click()
     })
+}
+
+function mapSecurityLogsLevel(l) {
+    if(l == 1) return "info"
+    else if(l == 2) return "warning"
+    else return "error"
 }
 
 function initializeFiltersDialog() {
@@ -115,18 +121,18 @@ function initializeFiltersDialog() {
         if(mode == 1) {
             filters.security.columns = [...securityLogsFilters.querySelectorAll(".columns input:checked")].map(it => it.name)
             const newSecurityLogsLevels = [...securityLogsFilters.querySelectorAll(".levels input:checked")].map(it => it.name)
-            if(JSON.stringify(newSecurityLogsLevels) != JSON.stringify(filters.security.levels)) {
+            if(newSecurityLogsLevels.length != filters.security.levels.length) {
                 filters.security.levels = newSecurityLogsLevels
-                filterSecurityLogsByLevels()
+                logs = allLogs.filter(it => filters.security.levels.includes(mapSecurityLogsLevel(it.level)))
                 page = 1
             }
         }
         if(mode == 2) {
             filters.network.columns = [...networkLogsFilters.querySelectorAll("input:checked")].map(it => it.name)
             const newNetworkLogsTypes = [...networkLogsFilters.querySelectorAll(".types input:checked")].map(it => it.name)
-            if(JSON.stringify(newNetworkLogsTypes) != JSON.stringify(filters.network.types)) {
+            if(newNetworkLogsTypes.length != filters.network.types.length) {
                 filters.network.types = newNetworkLogsTypes
-                filterNetworkLogsByTypes()
+                logs = allLogs.filter(it => filters.network.types.includes(it.type))
                 page = 1
             }
         }
@@ -147,20 +153,6 @@ function applyColumnFilters() {
         document.querySelectorAll(`table.network-logs .${columnName}`).forEach(item => {
             item.classList.add("hidden")
         })
-    })
-}
-
-function filterSecurityLogsByLevels() {
-    logs = []
-    allLogs.forEach(it => {
-        if(filters.security.levels.includes(it.level)) logs.push(it)
-    })
-}
-
-function filterNetworkLogsByTypes() {
-    logs = []
-    allLogs.forEach(it => {
-        if(filters.network.types.includes(it.type)) logs.push(it)
     })
 }
 
@@ -235,7 +227,7 @@ function reloadPager() {
     const rowsPerPage = perPage != null ? JSON.parse(perPage) : 100
     const maxPage = Math.ceil(logs.length / rowsPerPage)
     previous.disabled = page <= 1
-    next.disabled = page == maxPage
+    next.disabled = page >= maxPage
     document.querySelector("#pager > a").innerText = `${page} / ${maxPage}`
     const jumpToPageInput = dialog.querySelector("input")
     jumpToPageInput.placeholder = `1~${maxPage}`
@@ -300,10 +292,6 @@ function reloadBodyContent(changeMode) {
 }
 
 function loadSecurityLogs() {
-    const levelMap = new Map()
-    levelMap.set(1, "info")
-    levelMap.set(2, "warning")
-    levelMap.set(3, "error")
     const tbody = document.querySelector("table.security-logs tbody")
     const perPage = localStorage.getItem("per_page")
     const rowsPerPage = perPage != null ? JSON.parse(perPage) : 100
@@ -318,7 +306,7 @@ function loadSecurityLogs() {
         tTime.innerText = log.time_nanos
         const tLevel = document.createElement("td")
         tLevel.classList.add("level")
-        tLevel.innerText = levelMap.get(log.level)
+        tLevel.innerText = mapSecurityLogsLevel(log.level)
         const tEvent = document.createElement("td")
         tEvent.classList.add("event")
         tEvent.innerText = str[`t${log.tag}`]

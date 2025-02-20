@@ -10,20 +10,17 @@ button[is=svg-icon-button] {
         margin: 8px;
         fill: var(--md-sys-color-on-surface-variant);
     }
-}
-button[is=svg-icon-button]:disabled {
-    opacity: 60%;
-}
-button[is=svg-icon-button]:not(:disabled):hover {
-    cursor: pointer;
-    background-color: color-mix(in srgb, var(--md-sys-color-on-surface-variant) 8%, transparent);
-    > svg {
+    &:disabled > svg {
+        fill: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+    }
+    &:hover:not(:disabled) {
+        cursor: pointer;
+        background-color: color-mix(in srgb, var(--md-sys-color-on-surface-variant) 8%, transparent);
         fill: color-mix(in srgb, var(--md-sys-color-on-surface-variant) 8%, var(--md-sys-color-on-surface-variant));
     }
-}
-button[is=svg-icon-button]:not(:disabled):active {
-    background-color: color-mix(in srgb, var(--md-sys-color-on-surface-variant) 10%, transparent);
-    > svg {
+    &:active:not(:disabled) {
+        background-color: color-mix(in srgb, var(--md-sys-color-on-surface-variant) 10%, transparent);
         fill: color-mix(in srgb, var(--md-sys-color-on-surface-variant) 10%, var(--md-sys-color-on-surface-variant));
     }
 }
+
