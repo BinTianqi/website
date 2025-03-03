@@ -1,0 +1,14 @@
+body {
+    font-family: system-ui;
+    margin: 0;
+    background-color: var(--md-sys-color-background);
+    color: var(--md-sys-color-on-background);
+}
+
+a[href] {
+    text-decoration: none;
+    color: var(--md-sys-color-primary);
+    &:hover {
+        text-decoration: underline;
+    }
+}

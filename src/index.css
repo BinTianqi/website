@@ -1,0 +1,28 @@
+body {
+    display: flex;
+    justify-content: center;
+}
+
+h2 {
+    margin: 0;
+}
+
+p {
+    margin: 0;
+}
+
+main {
+    > h1 {
+        text-align: center;
+    }
+    > .card {
+        width: 300px;
+        background-color: var(--md-sys-color-surface-variant);
+        padding: 10px;
+        border-radius: 10px;
+        > h2 {
+            margin: 0.2em 0;
+        }
+    }
+}
+

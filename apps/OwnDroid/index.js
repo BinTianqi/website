@@ -1,6 +1,6 @@
 import { applyLang, getStr } from "./i18n"
 import { esc } from "../../utils"
-import { SvgIconButton } from "../../components"
+import { SvgIconButton } from "/src/components"
 
 let str = {}
 
