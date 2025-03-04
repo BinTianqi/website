@@ -24,5 +24,8 @@ main {
             margin: 0.2em 0;
         }
     }
+    > div.about {
+        margin-top: 30px;
+    }
 }
 
