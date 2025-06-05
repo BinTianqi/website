@@ -3,6 +3,9 @@ button:is(.filled, .tonal) {
     border: none;
     border-radius: 8px;
     padding: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
 }
 
 button.filled {
