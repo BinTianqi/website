@@ -1,26 +1,29 @@
-button[is=svg-icon-button] {
+button[is=icon-button] {
     background-color: transparent;
     border: 0;
     border-radius: 50%;
     width: 40px;
     height: 40px;
-    padding-inline: 0;
-    padding-block: 0;
+    padding: 8px;
     > svg {
-        margin: 8px;
         fill: var(--md-sys-color-on-surface-variant);
     }
     &:disabled > svg {
-        fill: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+        fill: rgb(from var(--md-sys-color-on-surface) r g b / 0.38);
     }
     &:hover:not(:disabled) {
         cursor: pointer;
-        background-color: color-mix(in srgb, var(--md-sys-color-on-surface-variant) 8%, transparent);
+        background-color: rgb(from var(--md-sys-color-on-surface-variant) r g b / 0.08);
         fill: color-mix(in srgb, var(--md-sys-color-on-surface-variant) 8%, var(--md-sys-color-on-surface-variant));
     }
     &:active:not(:disabled) {
-        background-color: color-mix(in srgb, var(--md-sys-color-on-surface-variant) 10%, transparent);
+        background-color: rgb(from var(--md-sys-color-on-surface-variant) r g b / 0.1);
         fill: color-mix(in srgb, var(--md-sys-color-on-surface-variant) 10%, var(--md-sys-color-on-surface-variant));
+    }
+    &.extra-small {
+        width: 32px;
+        height: 32px;
+        padding: 4px;
     }
 }
 

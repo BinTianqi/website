@@ -1,6 +1,9 @@
 import { applyLang, getStr } from "./i18n"
-import { esc } from "../../utils"
-import { SvgIconButton } from "/src/components"
+import { esc } from "../utils"
+import { IconButton } from "../components"
+import "../theme/m3.css"
+import "../general.css"
+import "./index.css"
 
 let str = {}
 
@@ -466,9 +469,7 @@ function loadNetworkLogs() {
     }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    initializePage()
-})
+document.addEventListener("DOMContentLoaded", initializePage)
 
-customElements.define("svg-icon-button", SvgIconButton, { extends: "button" })
+customElements.define("icon-button", IconButton, { extends: "button" })
 
