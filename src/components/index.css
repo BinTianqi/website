@@ -27,3 +27,15 @@ button[is=icon-button] {
     }
 }
 
+input:is([type=text], [type=number], [type=date]).m3, textarea.m3 {
+    color: var(--md-sys-color-on-background);
+    background-color: transparent;
+    border: 1px solid var(--md-sys-color-on-background);
+    border-radius: 6px;
+    padding: 4px;
+    &:focus-visible {
+        border-color: var(--md-sys-color-primary);
+        outline-color: var(--md-sys-color-primary);
+    }
+}
+

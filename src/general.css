@@ -1,8 +1,5 @@
 :root {
     font-family: "Roboto", system-ui;
-}
-
-a, p, span {
     font-weight: 400;
     font-size: 16px;
     line-height: 24px;

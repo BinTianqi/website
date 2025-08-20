@@ -1,14 +1,15 @@
-button:is(.filled, .tonal) {
+button.m3 {
     appearance: none;
     border: none;
-    border-radius: 8px;
-    padding: 8px;
+    border-radius: 10px;
+    height: 36px;
+    padding: 0 12px;
     font-size: 14px;
     font-weight: 600;
     line-height: 20px;
 }
 
-button.filled {
+button.m3 {
     background-color: var(--md-sys-color-primary);
     color: var(--md-sys-color-on-primary);
     &:disabled {
@@ -24,7 +25,7 @@ button.filled {
         color: color-mix(in srgb, var(--md-sys-color-on-primary), var(--md-sys-color-on-primary) 10%);
     }
 }
-button.tonal {
+button.m3.tonal {
     background-color: var(--md-sys-color-secondary-container);
     color: var(--md-sys-color-on-secondary-container);
     &:hover:not(:disabled) {
