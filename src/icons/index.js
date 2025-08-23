@@ -11,6 +11,9 @@ import keyboard_arrow_left from "./svgs/keyboard_arrow_left.svg?raw"
 import keyboard_arrow_right from "./svgs/keyboard_arrow_right.svg?raw"
 import refresh from "./svgs/refresh.svg?raw"
 import settings from "./svgs/settings.svg?raw"
+import edit from "./svgs/edit.svg?raw"
+import reply from "./svgs/reply.svg?raw"
+import content_copy from "./svgs/content_copy.svg?raw"
 
 export default {
     arrow_back: arrow_back,
@@ -26,4 +29,7 @@ export default {
     keyboard_arrow_right: keyboard_arrow_right,
     refresh: refresh,
     settings: settings,
+    edit: edit,
+    reply: reply,
+    content_copy: content_copy,
 }

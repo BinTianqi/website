@@ -13,8 +13,8 @@ button.m3 {
     background-color: var(--md-sys-color-primary);
     color: var(--md-sys-color-on-primary);
     &:disabled {
-        background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent);
-        color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+        background-color: rgb(from var(--md-sys-color-on-surface) r g b / 0.12);
+        color: rgb(from var(--md-sys-color-on-surface) r g b / 0.38);
     }
     &:hover:not(:disabled) {
         background-color: color-mix(in srgb, var(--md-sys-color-primary), var(--md-sys-color-on-primary) 8%);
