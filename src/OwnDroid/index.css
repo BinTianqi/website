@@ -13,14 +13,6 @@
         margin-left: 5px;
         color: var(--md-sys-color-on-surface);
     }
-    #pager:not(.hidden) {
-        display: flex;
-        align-items: center;
-        cursor: pointer;
-        > a {
-            margin: 0 5px;
-        }
-    }
     #icons-row {
         margin-right: 20px;
     }
@@ -28,7 +20,6 @@
 
 #content {
     padding: 70px 10px 40px 10px;
-    overflow-x: auto;
 }
 
 #greeting {
@@ -61,11 +52,18 @@ th {
     text-align: start;
 }
 
+td.details {
+    > pre {
+        white-space: pre-wrap;
+    }
+}
+
 dialog {
     border: none;
     border-radius: 20px;
     background: var(--md-sys-color-surface-container);
     > div {
+        min-width: 200px;
         display: flex;
         flex-direction: column;
         > h2 {

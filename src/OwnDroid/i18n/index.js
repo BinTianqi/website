@@ -1,10 +1,11 @@
 import en from "./en.js"
 import zhCn from "./zh-CN.js"
+
 let str
-export function applyLang() {
-    const langPreference = localStorage.getItem("lang")
-    const lang = langPreference == null ? navigator.language : langPreference
-    if(lang.split('-')[0] == "zh") {
+
+export function applyLang(language) {
+    const lang = language == null ? navigator.language : language
+    if (lang.startsWith("zh")) {
         str = zhCn
     } else {
         str = en
@@ -17,6 +18,4 @@ export function applyLang() {
 export function getStr() {
     return str
 }
-
-applyLang()
 

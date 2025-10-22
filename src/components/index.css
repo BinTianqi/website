@@ -1,4 +1,4 @@
-button[is=icon-button] {
+button.icon-button {
     background-color: transparent;
     border: 0;
     border-radius: 50%;

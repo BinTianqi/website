@@ -5,6 +5,7 @@
     "dev": "vite"
   },
   "dependencies": {
+    "dayjs": "^1.11.18",
     "vite": "^6.0.1"
   }
 }

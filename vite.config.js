@@ -1,7 +1,9 @@
 import { defineConfig } from "vite"
+import myVitePlugin from "./src/my-vite-plugin.js";
 
 export default defineConfig({
     root: "src",
+    plugins: [ myVitePlugin("src") ],
     build: {
         outDir: "../dist",
         emptyOutDir: true,

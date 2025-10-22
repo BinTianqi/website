@@ -5,30 +5,37 @@
     <meta name="viewport" content="width=device-width">
     <meta charset="UTF-8">
     <script src="./index.js" type="module"></script>
+    <link rel="stylesheet" href="./index.css">
+    <link rel="stylesheet" href="../general.css">
+    <link rel="stylesheet" href="../theme/m3.css">
+    <link rel="stylesheet" href="../components/index.css">
+    <link rel="stylesheet" href="../components/buttons.css">
+    <link rel="stylesheet" href="../components/checkbox.css">
 </head>
 <body>
     <div id="topbar" class="hidden">
         <a>OwnDroid</a>
-        <button is="icon-button" id="home-btn" class="hidden" icon="home"></button>
-        <div id="pager" class="hidden">
-            <button is="icon-button" id="previous-page" icon="keyboard_arrow_left" disabled></button>
-            <a>0 / 0</a>
-            <button is="icon-button" id="next-page" icon="keyboard_arrow_right" disabled></button>
-        </div>
+        <button id="home-btn" class="hidden icon-button">
+            <icon name="home"/>
+        </button>
         <div id="icons-row">
-            <button is="icon-button" id="open-filters-btn" class="hidden" icon="filter"></button>
-            <button is="icon-button" id="open-settings-btn" icon="settings"></button>
+            <button id="open-filters-btn" class="hidden icon-button">
+                <icon name="filter"/>
+            </button>
+            <button id="open-settings-btn" class="icon-button">
+                <icon name="settings"/>
+            </button>
         </div>
     </div>
     <div id="content">
         <div id="greeting">
             <div class="security-logs">
                 <a str="view_security_logs">View security logs</a>
-                <button str="open_file" class="filled">Open file</button>
+                <button str="open_file" class="m3 filled">Open file</button>
             </div>
             <div class="network-logs">
                 <a str="view_network_logs">View network logs</a>
-                <button str="open_file" class="filled">Open file</button>
+                <button str="open_file" class="m3 filled">Open file</button>
             </div>
         </div>
         <table class="security-logs hidden">
@@ -63,7 +70,7 @@
                 <h3 str="columns">Columns</h3>
                 <div class="columns">
                     <div class="checkbox">
-                        <input type="checkbox" name="id" id="s-id-checkbox"></input>
+                        <input type="checkbox" name="id" id="s-id-checkbox">
                         <label for="s-id-checkbox">ID</label>
                     </div>
                     <div class="checkbox">
@@ -86,15 +93,15 @@
                 <h3 str="levels">Levels</h3>
                 <div class="levels">
                     <div class="checkbox">
-                        <input type="checkbox" name="info" id="s-info-checkbox"></input>
+                        <input type="checkbox" name="1" id="s-info-checkbox">
                         <label for="s-info-checkbox">info</label>
                     </div>
                     <div class="checkbox">
-                        <input type="checkbox" name="warning" id="s-warning-checkbox"></input>
+                        <input type="checkbox" name="2" id="s-warning-checkbox">
                         <label for="s-warning-checkbox">warning</label>
                     </div>
                     <div class="checkbox">
-                        <input type="checkbox" name="error" id="s-error-checkbox"></input>
+                        <input type="checkbox" name="3" id="s-error-checkbox">
                         <label for="s-error-checkbox">error</label>
                     </div>
                 </div>
@@ -126,18 +133,18 @@
                 <h3 str="types">Types</h3>
                 <div class="types">
                     <div class="checkbox">
-                        <input type="checkbox" name="connect" id="n-connect-checkbox"></input>
+                        <input type="checkbox" name="connect" id="n-connect-checkbox">
                         <label for="n-connect-checkbox" str="connect">Connect</label>
                     </div>
                     <div class="checkbox">
-                        <input type="checkbox" name="dns" id="n-dns-checkbox"></input>
+                        <input type="checkbox" name="dns" id="n-dns-checkbox">
                         <label for="n-dns-checkbox">DNS</label>
                     </div>
                 </div>
             </div>
             <div class="buttons-row">
-                <button str="cancel" class="tonal close-dialog-btn">Cancel</button>
-                <button str="apply" class="filled apply-btn">Apply</button>
+                <button str="cancel" class="m3 tonal close-dialog-btn">Cancel</button>
+                <button str="apply" class="m3 filled apply-btn">Apply</button>
             </div>
         </div>
     </dialog>
@@ -152,13 +159,9 @@
                     <option value="zh-CN">简体中文</option>
                 </select>
             </div>
-            <div>
-                <label str="rows_per_page" for="rows-per-page">Rows per page (1~1000)</label>
-                <input type="number" min="1" max="1000" name="rows_per_page" id="rows-per-page" required/>
-            </div>
             <div class="buttons-row">
-                <button str="cancel" class="tonal close-dialog-btn">Cancel</button>
-                <button str="apply" class="filled apply-btn">Apply</button>
+                <button str="cancel" class="m3 tonal close-dialog-btn">Cancel</button>
+                <button str="apply" class="m3 filled apply-btn">Apply</button>
             </div>
         </div>
     </dialog>
@@ -169,8 +172,8 @@
                 <input type="number" name="page-number" id="page-number" min="1" max="0" required/>
             </div>
             <div class="buttons-row">
-                <button str="cancel" class="tonal close-dialog-btn">Cancel</button>
-                <button str="jump" class="filled apply-btn" disabled>Jump</button>
+                <button str="cancel" class="m3 tonal close-dialog-btn">Cancel</button>
+                <button str="jump" class="m3 filled apply-btn" disabled>Jump</button>
             </div>
         </div>
     </dialog>
