@@ -21,6 +21,7 @@ export default {
     network_logs: "网络日志",
     columns: "列",
     levels: "等级",
+    event_types: "事件类型",
     types: "类型",
 
     page_number: "页数",
@@ -71,8 +72,8 @@ export default {
     t210016: "设置密码超时",
     t210018: "设置密码历史长度",
     t210022: "远程锁定",
-    t210003: "ADB 接收文件",
-    t210004: "ADB 发送文件",
+    t210003: "adb pull",
+    t210004: "adb push",
     t210027: "添加用户限制",
     t210028: "移除用户限制",
     t210037: "连接 Wi-Fi",

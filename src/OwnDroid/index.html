@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="../components/checkbox.css">
 </head>
 <body>
-    <div id="topbar" class="hidden">
+    <div id="topbar">
         <a>OwnDroid</a>
         <button id="home-btn" class="hidden icon-button">
             <icon name="home"/>
@@ -69,83 +69,85 @@
             <div class="security-logs hidden">
                 <h3 str="columns">Columns</h3>
                 <div class="columns">
-                    <div class="checkbox">
-                        <input type="checkbox" name="id" id="s-id-checkbox">
+                    <div>
+                        <input type="checkbox" name="id" id="s-id-checkbox" class="m3">
                         <label for="s-id-checkbox">ID</label>
                     </div>
-                    <div class="checkbox">
-                        <input type="checkbox" name="time" id="s-time-checkbox"/>
+                    <div>
+                        <input type="checkbox" name="time" id="s-time-checkbox" class="m3"/>
                         <label str="th_time" for="s-time-checkbox">Time</label>
                     </div>
-                    <div class="checkbox">
-                        <input type="checkbox" name="level" id="s-level-checkbox"/>
+                    <div>
+                        <input type="checkbox" name="level" id="s-level-checkbox" class="m3"/>
                         <label str="th_level" for="s-level-checkbox">Level</label>
                     </div>
-                    <div class="checkbox">
-                        <input type="checkbox" name="event" id="s-event-checkbox"/>
+                    <div>
+                        <input type="checkbox" name="event" id="s-event-checkbox" class="m3"/>
                         <label str="th_event" for="s-event-checkbox">Event</label>
                     </div>
-                    <div class="checkbox">
-                        <input type="checkbox" name="details" id="s-details-checkbox"/>
+                    <div>
+                        <input type="checkbox" name="details" id="s-details-checkbox" class="m3"/>
                         <label str="th_details" for="s-details-checkbox">Details</label>
                     </div>
                 </div>
                 <h3 str="levels">Levels</h3>
                 <div class="levels">
-                    <div class="checkbox">
-                        <input type="checkbox" name="1" id="s-info-checkbox">
-                        <label for="s-info-checkbox">info</label>
+                    <div>
+                        <input type="checkbox" name="1" id="s-info-checkbox" class="m3">
+                        <label for="s-info-checkbox">info<span></span></label>
                     </div>
-                    <div class="checkbox">
-                        <input type="checkbox" name="2" id="s-warning-checkbox">
-                        <label for="s-warning-checkbox">warning</label>
+                    <div>
+                        <input type="checkbox" name="2" id="s-warning-checkbox" class="m3">
+                        <label for="s-warning-checkbox">warning<span></span></label>
                     </div>
-                    <div class="checkbox">
+                    <div>
                         <input type="checkbox" name="3" id="s-error-checkbox">
-                        <label for="s-error-checkbox">error</label>
+                        <label for="s-error-checkbox">error<span></span></label>
                     </div>
                 </div>
+                <h3 str="event_types">Event types</h3>
+                <div class="tags"></div>
             </div>
             <div class="network-logs hidden">
                 <h3 str="columns">Columns</h3>
                 <div class="columns">
-                    <div class="checkbox">
-                        <input type="checkbox" name="id" id="n-id-checkbox"/>
+                    <div>
+                        <input type="checkbox" name="id" id="n-id-checkbox" class="m3"/>
                         <label for="n-id-checkbox">ID</label>
                     </div>
-                    <div class="checkbox">
-                        <input type="checkbox" name="time" id="n-time-checkbox"/>
+                    <div>
+                        <input type="checkbox" name="time" id="n-time-checkbox" class="m3"/>
                         <label str="th_time" for="n-time-checkbox">Time</label>
                     </div>
-                    <div class="checkbox">
-                        <input type="checkbox" name="package" id="n-package-checkbox"/>
+                    <div>
+                        <input type="checkbox" name="package" id="n-package-checkbox" class="m3"/>
                         <label str="th_package" for="n-package-checkbox">Package</label>
                     </div>
-                    <div class="checkbox">
-                        <input type="checkbox" name="type" id="n-type-checkbox"/>
+                    <div>
+                        <input type="checkbox" name="type" id="n-type-checkbox" class="m3"/>
                         <label str="th_type" for="n-type-checkbox">Type</label>
                     </div>
-                    <div class="checkbox">
-                        <input type="checkbox" name="details" id="n-details-checkbox"/>
+                    <div>
+                        <input type="checkbox" name="details" id="n-details-checkbox" class="m3"/>
                         <label str="th_details" for="n-details-checkbox">Details</label>
                     </div>
                 </div>
                 <h3 str="types">Types</h3>
                 <div class="types">
-                    <div class="checkbox">
-                        <input type="checkbox" name="connect" id="n-connect-checkbox">
-                        <label for="n-connect-checkbox" str="connect">Connect</label>
+                    <div>
+                        <input type="checkbox" name="connect" id="n-connect-checkbox" class="m3">
+                        <label for="n-connect-checkbox"><span str="connect"></span><span></span></label>
                     </div>
-                    <div class="checkbox">
-                        <input type="checkbox" name="dns" id="n-dns-checkbox">
-                        <label for="n-dns-checkbox">DNS</label>
+                    <div>
+                        <input type="checkbox" name="dns" id="n-dns-checkbox" class="m3">
+                        <label for="n-dns-checkbox">DNS<span></span></label>
                     </div>
                 </div>
             </div>
-            <div class="buttons-row">
-                <button str="cancel" class="m3 tonal close-dialog-btn">Cancel</button>
-                <button str="apply" class="m3 filled apply-btn">Apply</button>
-            </div>
+        </div>
+        <div class="buttons-row">
+            <button str="cancel" class="m3 tonal close-dialog-btn">Cancel</button>
+            <button str="apply" class="m3 filled apply-btn">Apply</button>
         </div>
     </dialog>
     <dialog id="settings">
@@ -153,28 +155,16 @@
             <h2 str="settings">Settings</h2>
             <div>
                 <label str="language" for="select-lang">Select language</label>
-                <select name="select-lang" id="select-lang">
+                <select name="select-lang" id="select-lang" class="m3">
                     <option value="default">Default</option>
                     <option value="en">English</option>
                     <option value="zh-CN">简体中文</option>
                 </select>
             </div>
-            <div class="buttons-row">
-                <button str="cancel" class="m3 tonal close-dialog-btn">Cancel</button>
-                <button str="apply" class="m3 filled apply-btn">Apply</button>
-            </div>
         </div>
-    </dialog>
-    <dialog id="pager-dialog">
-        <div>
-            <div>
-                <label str="page_number" for="page-number">Page number:</label>
-                <input type="number" name="page-number" id="page-number" min="1" max="0" required/>
-            </div>
-            <div class="buttons-row">
-                <button str="cancel" class="m3 tonal close-dialog-btn">Cancel</button>
-                <button str="jump" class="m3 filled apply-btn" disabled>Jump</button>
-            </div>
+        <div class="buttons-row">
+            <button str="cancel" class="m3 tonal close-dialog-btn">Cancel</button>
+            <button str="apply" class="m3 filled apply-btn">Apply</button>
         </div>
     </dialog>
 </body>

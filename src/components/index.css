@@ -27,7 +27,7 @@ button.icon-button {
     }
 }
 
-input:is([type=text], [type=number], [type=date]).m3, textarea.m3 {
+input:is([type=text], [type=number], [type=date]).m3, textarea.m3, select.m3 {
     color: var(--md-sys-color-on-background);
     background-color: transparent;
     border: 1px solid var(--md-sys-color-on-background);

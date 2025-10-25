@@ -53,57 +53,59 @@ th {
 }
 
 td.details {
+    white-space: pre-wrap;
     > pre {
         white-space: pre-wrap;
     }
 }
 
 dialog {
+    &[open] {
+        display: flex;
+        flex-direction: column;
+    }
+    min-width: 200px;
+    max-height: 85%;
     border: none;
     border-radius: 20px;
     background: var(--md-sys-color-surface-container);
-    > div {
-        min-width: 200px;
-        display: flex;
-        flex-direction: column;
+    > div:not(.buttons-row) {
+        overflow-y: auto;
         > h2 {
             margin-block-start: 10px;
         }
-        .buttons-row {
-            align-self: end;
-            margin-top: 20px;
-        }
+    }
+    .buttons-row {
+        align-self: end;
+        margin-top: 20px;
+    }
+    &::backdrop {
+        backdrop-filter: blur(2px);
     }
 }
 
 #filters {
+    h3 {
+        margin: 5px 0 10px 0;
+    }
     .columns, .levels, .types {
-        display: flex;
-        flex-wrap: wrap;
         margin-bottom: 10px;
+        > div {
+            display: inline-block;
+            margin-right: 5px;
+        }
     }
-    .columns > div, .levels > div, .types > div {
-        display: flex;
-        align-items: center;
-        margin-right: 5px;
+    :is(.columns, .levels, .tags, .types) > div > * {
+        vertical-align: middle;
     }
-}
-
-#pager-dialog input {
-    width: 5em;
-}
-
-.hidden {
-    display: none;
-}
-
-input[type=number], select {
-    padding: 6px;
-    background-color: transparent;
-    border: 1px solid var(--md-sys-color-outline);
-    border-radius: 4px;
-    &:focus {
-        border-color: var(--md-sys-color-primary);
+    .tags > div {
+        margin-bottom: 5px;
+        input {
+            margin-right: 5px;
+        }
+    }
+    label > span:last-child {
+        margin-left: 3px;
     }
 }
 

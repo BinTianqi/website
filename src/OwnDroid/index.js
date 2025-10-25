@@ -9,7 +9,11 @@ const Logs = []
 const defaultFilters = {
     security: {
         levels: [1, 2, 3],
-        columns: ["id", "time", "level", "event", "details"]
+        columns: ["id", "time", "level", "event", "details"],
+        tags: [210002, 210001, 210005, 210044, 210039, 210040, 210034, 210029, 210030, 210033, 210031, 210021, 210006,
+            210007, 210008, 210026, 210024, 210025, 210032, 210011, 210012, 210015, 210020, 210019, 210013, 210014,
+            210010, 210009, 210041, 210043, 210042, 210036, 210035, 210017, 210016, 210018, 210022, 210003, 210004,
+            210027, 210028, 210037, 210038, 210023]
     },
     network: {
         columns: ["id", "time", "package", "type", "details"],
@@ -28,7 +32,7 @@ function initializePage() {
     document.getElementById("home-btn").addEventListener("click", switchToHomeScreen)
     document.querySelectorAll(".close-dialog-btn").forEach(btn => {
         btn.addEventListener("click", () => {
-            btn.parentNode.parentNode.parentNode.close()
+            btn.parentNode.parentNode.close()
         })
     })
 }
@@ -65,13 +69,36 @@ function initializeFiltersDialog() {
     const securityLogsFilters = dialog.querySelector(".security-logs")
     const networkLogsFilters = dialog.querySelector(".network-logs")
     const applyBtn = dialog.querySelector(".apply-btn")
+    const tagsDiv = securityLogsFilters.querySelector(".tags")
+    for (const tag of defaultFilters.security.tags) {
+        const div = document.createElement("div")
+        div.classList.add("checkbox")
+        const input = document.createElement("input")
+        const id = `s-tag${tag}-checkbox`
+        input.type = "checkbox"
+        input.classList.add("m3")
+        input.name = tag.toString()
+        input.id = id
+        const label = document.createElement("label")
+        label.setAttribute("for", id)
+        const span1 = document.createElement("span")
+        span1.textContent = str["t" + tag.toString()]
+        const span2 = document.createElement("span")
+        label.append(span1, span2)
+        div.append(input, label)
+        tagsDiv.append(div)
+    }
     function checkValidity() {
-        applyBtn.disabled =
-            mode == 1 ?
-            securityLogsFilters.querySelectorAll(".columns input:checked").length == 0 ||
-            securityLogsFilters.querySelectorAll(".levels input:checked").length == 0 :
-            networkLogsFilters.querySelectorAll(".columns input:checked").length == 0 ||
-            networkLogsFilters.querySelectorAll(".types input:checked").length == 0
+        if (mode == 1) {
+            const selectedColumns = securityLogsFilters.querySelectorAll(".columns div:not(.hidden) input:checked")
+            const selectedLevels = securityLogsFilters.querySelectorAll(".levels div:not(.hidden) input:checked")
+            const selectedTags = securityLogsFilters.querySelectorAll(".tags div:not(.hidden) input:checked")
+            applyBtn.disabled = selectedColumns.length == 0 || selectedLevels.length == 0 || selectedTags.length == 0
+        } else {
+            const selectedColumns = networkLogsFilters.querySelectorAll(".columns div:not(.hidden) input:checked")
+            const selectedTypes = networkLogsFilters.querySelectorAll(".types div:not(.hidden) input:checked")
+            applyBtn.disabled = selectedColumns.length == 0 || selectedTypes.length == 0
+        }
     }
     document.getElementById("open-filters-btn").addEventListener("click", () => {
         if (mode == 1) {
@@ -80,6 +107,9 @@ function initializeFiltersDialog() {
             })
             securityLogsFilters.querySelectorAll(".levels input").forEach(it => {
                 it.checked = filters.security.levels.includes(parseInt(it.name))
+            })
+            securityLogsFilters.querySelectorAll(".tags input").forEach(it => {
+                it.checked = filters.security.tags.includes(parseInt(it.name))
             })
         }
         if (mode == 2) {
@@ -130,6 +160,22 @@ function updateFilters() {
                     })
                 } else {
                     document.querySelectorAll(`table.security-logs tr.l${level}`).forEach(it => {
+                        it.classList.add("hidden")
+                    })
+                }
+            })
+        }
+        const checkedTags = document.querySelectorAll("#filters .security-logs .tags input:checked")
+        const newTagFilters = [...checkedTags].map(it => parseInt(it.name))
+        if (!compareArrays(newTagFilters, filters.security.tags)) {
+            filters.security.tags = newTagFilters
+            defaultFilters.security.tags.forEach(tag => {
+                if (filters.security.tags.includes(tag)) {
+                    document.querySelectorAll(`table.security-logs tr.t${tag}.hidden`).forEach(it => {
+                        it.classList.remove("hidden")
+                    })
+                } else {
+                    document.querySelectorAll(`table.security-logs tr.t${tag}`).forEach(it => {
                         it.classList.add("hidden")
                     })
                 }
@@ -208,14 +254,20 @@ function switchToHomeScreen() {
     if (mode == 1) {
         document.querySelector("table.security-logs").classList.add("hidden")
         document.querySelector("table.security-logs tbody").replaceChildren()
+        document.querySelectorAll("#filters .security-logs div.hidden").forEach(it => {
+            it.classList.remove("hidden")
+        })
         document.querySelector("#filters .security-logs").classList.add("hidden")
     }
     if (mode == 2) {
         document.querySelector("table.network-logs").classList.add("hidden")
         document.querySelector("table.network-logs tbody").replaceChildren()
+        document.querySelectorAll("#filters .network-logs div.hidden").forEach(it => {
+            it.classList.remove("hidden")
+        })
         document.querySelector("#filters .network-logs").classList.add("hidden")
     }
-    document.querySelector("title").innerText = "OwnDroid"
+    document.querySelector("title").textContent = "OwnDroid"
     filters = structuredClone(defaultFilters)
     mode = 0
 }
@@ -230,14 +282,62 @@ function switchToLogsViewerScreen() {
         document.querySelectorAll("table.security-logs th").forEach(it => it.classList.remove("hidden"))
         document.querySelector("#filters .security-logs").classList.remove("hidden")
         loadSecurityLogs()
+        statSecurityLogs()
     }
     if (mode == 2) {
         document.querySelector("table.network-logs").classList.remove("hidden")
         document.querySelectorAll("table.network-logs th").forEach(it => it.classList.remove("hidden"))
-        document.querySelector("title").innerText = str.network_logs_viewer
+        document.querySelector("title").textContent = str.network_logs_viewer
         document.querySelector("#filters .network-logs").classList.remove("hidden")
         loadNetworkLogs()
+        statNetworkLogs()
     }
+}
+
+function statSecurityLogs() {
+    const levels = { 1: 0, 2: 0, 3: 0 }
+    const tags = {}
+    defaultFilters.security.tags.forEach(tag => {
+        tags[tag] = 0
+    })
+    for (const log of Logs) {
+        levels[log.level]++
+        tags[log.tag]++
+    }
+    document.querySelectorAll("#filters .security-logs .levels input").forEach(it => {
+        const count = levels[it.name]
+        if (count == 0) {
+            it.parentElement.classList.add("hidden")
+        } else {
+            it.nextElementSibling.lastElementChild.textContent = `(${count})`
+        }
+    })
+    document.querySelectorAll("#filters .security-logs .tags input").forEach(it => {
+        const count = tags[it.name]
+        if (count == 0) {
+            it.parentElement.classList.add("hidden")
+        } else {
+            it.nextElementSibling.lastElementChild.textContent = `(${count})`
+        }
+    })
+}
+
+function statNetworkLogs() {
+    const types = {
+        connect: 0,
+        dns: 0
+    }
+    for (const log of Logs) {
+        types[log.type]++
+    }
+    document.querySelectorAll("#filters .network-logs .types input").forEach(it => {
+        const count = types[it.name]
+        if (count == 0) {
+            it.parentElement.classList.add("hidden")
+        } else {
+            it.nextElementSibling.lastElementChild.textContent = `(${count})`
+        }
+    })
 }
 
 function loadSecurityLogs() {
@@ -247,21 +347,25 @@ function loadSecurityLogs() {
         const row = document.createElement("tr")
         const tId = document.createElement("td")
         tId.classList.add("id")
-        tId.innerText = log.id
+        tId.textContent = log.id
         const tTime = document.createElement("td")
         tTime.classList.add("time")
-        tTime.innerText = formateTimestamp(log.time)
+        tTime.textContent = formateTimestamp(log.time)
         const tLevel = document.createElement("td")
         tLevel.classList.add("level")
-        tLevel.innerText = mapSecurityLogsLevel(log.level)
+        tLevel.textContent = mapSecurityLogsLevel(log.level)
         const tEvent = document.createElement("td")
         tEvent.classList.add("event")
-        tEvent.innerText = str[`t${log.tag}`]
+        tEvent.textContent = str[`t${log.tag}`]
         const tDetails = document.createElement("td")
         tDetails.classList.add("details")
-        parseSecurityLogData(log.tag, log.data, tDetails)
+        try {
+            parseSecurityLogData(log.tag, log.data, tDetails)
+        } catch (e) {
+            console.error(e)
+        }
         row.append(tId, tTime, tLevel, tEvent, tDetails)
-        row.classList.add(`l${log.level}`)
+        row.classList.add(`l${log.level}`, `t${log.tag}`)
         tbody.append(row)
     }
 }
@@ -269,7 +373,7 @@ function loadSecurityLogs() {
 function parseSecurityLogData(tag, data, container) {
     if (tag == 210002) {
         const code = document.createElement("code")
-        code.innerText = data.command
+        code.textContent = data.command
         const pre = document.createElement("pre")
         pre.append(code)
         container.append(pre)
@@ -277,7 +381,7 @@ function parseSecurityLogData(tag, data, container) {
     }
     if (tag == 210003 || tag == 210004) {
         const pre = document.createElement("pre")
-        pre.innerText = data.path
+        pre.textContent = data.path
         container.append(pre)
         return
     }
@@ -385,7 +489,7 @@ function parseSecurityLogData(tag, data, container) {
         (data.reason ? "\n" + data.reason : "")
     else r = null
     if (r != null) {
-        container.innerText = r
+        container.textContent = r
     }
 }
 
@@ -396,22 +500,22 @@ function loadNetworkLogs() {
         const row = document.createElement("tr")
         const tId = document.createElement("td")
         tId.classList.add("id")
-        tId.innerText = log.id
+        tId.textContent = log.id
         const tTime = document.createElement("td")
         tTime.classList.add("time")
-        tTime.innerText = log.time
+        tTime.textContent = formateTimestamp(log.time)
         const tPackage = document.createElement("td")
         tPackage.classList.add("package")
-        tPackage.innerText = log.package
+        tPackage.textContent = log.package
         const tType = document.createElement("td")
         tType.classList.add("type")
-        tType.innerText = log.type
+        tType.textContent = log.type
         const tDetails = document.createElement("td")
         tDetails.classList.add("details")
         let details
         if (log.type == "connect") details = `Address: ${log.address}\nPort: ${log.port}`
         else details = `Host: ${log.host}\nAddresses:\n` + log.addresses.join("\n")
-        tDetails.innerText = details
+        tDetails.textContent = details
         row.append(tId, tTime, tPackage, tType, tDetails)
         row.classList.add(log.type)
         tbody.appendChild(row)

@@ -11,7 +11,7 @@ export function applyLang(language) {
         str = en
     }
     document.querySelectorAll("[str]").forEach(it => {
-        it.innerText = str[it.getAttribute("str")]
+        it.textContent = str[it.getAttribute("str")]
     })
 }
 
