@@ -5,6 +5,7 @@ export default {
     succeeded: "Succeeded",
     cancel: "Cancel",
     apply: "Apply",
+    start: "Start",
 
     security_logs_viewer: "Security logs viewer",
     network_logs_viewer: "Network logs viewer",
@@ -112,5 +113,9 @@ export default {
     password_history_length: "Password history length: ",
     user_restriction: "User restriction: ",
     event: "Event: ",
-    file_path: "File path: "
+    file_path: "File path: ",
+
+    generate_qr_code: "Generate QR code",
+    apk_download_src: "APK download src",
+    generate: "Generate"
 }

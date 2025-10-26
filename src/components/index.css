@@ -1,3 +1,43 @@
+button.m3 {
+    appearance: none;
+    border: none;
+    border-radius: 10px;
+    height: 36px;
+    padding: 0 12px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+}
+
+button.m3 {
+    background-color: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+    &:disabled {
+        background-color: rgb(from var(--md-sys-color-on-surface) r g b / 0.12);
+        color: rgb(from var(--md-sys-color-on-surface) r g b / 0.38);
+    }
+    &:hover:not(:disabled) {
+        background-color: color-mix(in srgb, var(--md-sys-color-primary), var(--md-sys-color-on-primary) 8%);
+        color: color-mix(in srgb, var(--md-sys-color-on-primary), var(--md-sys-color-on-primary) 8%);
+    }
+    &:active:not(:disabled) {
+        background-color: color-mix(in srgb, var(--md-sys-color-primary), var(--md-sys-color-on-primary) 10%);
+        color: color-mix(in srgb, var(--md-sys-color-on-primary), var(--md-sys-color-on-primary) 10%);
+    }
+}
+button.m3.tonal {
+    background-color: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+    &:hover:not(:disabled) {
+        background-color: color-mix(in srgb, var(--md-sys-color-secondary-container), var(--md-sys-color-on-secondary-container) 8%);
+        color: color-mix(in srgb, var(--md-sys-color-on-secondary-container), var(--md-sys-color-on-secondary-container) 8%);
+    }
+    &:active:not(:disabled) {
+        background-color: color-mix(in srgb, var(--md-sys-color-secondary-container), var(--md-sys-color-on-secondary-container) 10%);
+        color: color-mix(in srgb, var(--md-sys-color-on-secondary-container), var(--md-sys-color-on-secondary-container) 10%);
+    }
+}
+
 button.icon-button {
     background-color: transparent;
     border: 0;
@@ -39,3 +79,67 @@ input:is([type=text], [type=number], [type=date]).m3, textarea.m3, select.m3 {
     }
 }
 
+input[type=checkbox].m3 {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--md-sys-color-on-surface-variant);
+    border-radius: 2px;
+    background: transparent;
+    &:hover {
+        background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent)
+    }
+    &:active {
+        background-color: color-mix(in srgb, var(--md-sys-color-primary) 10%, transparent)
+    }
+    &::after {
+        display: none;
+        position: relative;
+        content: "";
+        width: 5px;
+        height: 10px;
+        left: 4px;
+        border: solid var(--md-sys-color-on-primary);
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+    }
+    &:checked {
+        &:hover {
+            background-color: color-mix(in srgb, var(--md-sys-color-primary) 8%, var(--md-sys-color-primary));
+        }
+        &:active {
+            background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 10%, var(--md-sys-color-primary))
+        }
+        &::after {
+            display: block;
+        }
+        border-color: var(--md-sys-color-primary);
+        background-color: var(--md-sys-color-primary);
+    }
+}
+
+input[type=radio].m3 {
+    position: relative;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--md-sys-color-on-surface-variant);
+    border-radius: 50%;
+    margin: auto 5px;
+    cursor: pointer;
+    &:checked {
+        border-color: var(--md-sys-color-primary);
+        &::after {
+            content: "";
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background-color: var(--md-sys-color-primary);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    }
+}

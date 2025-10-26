@@ -9,8 +9,6 @@
     <link rel="stylesheet" href="../general.css">
     <link rel="stylesheet" href="../theme/m3.css">
     <link rel="stylesheet" href="../components/index.css">
-    <link rel="stylesheet" href="../components/buttons.css">
-    <link rel="stylesheet" href="../components/checkbox.css">
 </head>
 <body>
     <div id="topbar">
@@ -37,6 +35,10 @@
                 <a str="view_network_logs">View network logs</a>
                 <button str="open_file" class="m3 filled">Open file</button>
             </div>
+            <div class="qr-code">
+                <span str="generate_qr_code">Generate QR code</span>
+                <button class="m3 filled" str="start">Start</button>
+            </div>
         </div>
         <table class="security-logs hidden">
             <thead>
@@ -62,6 +64,25 @@
             </thead>
             <tbody></tbody>
         </table>
+        <div class="qr-code hidden">
+            <h3 str="apk_download_src">APK download source</h3>
+            <div class="apk-src">
+                <div>
+                    <input type="radio" id="apk-src-github" class="m3" name="apk-src" value="github" checked>
+                    <label for="apk-src-github">GitHub Releases</label>
+                </div>
+                <div>
+                    <input type="radio" id="apk-src-izzy" class="m3" name="apk-src" value="izzy">
+                    <label for="apk-src-izzy">IzzyOnDroid</label>
+                </div>
+            </div>
+            <div class="testkey">
+                <input type="checkbox" id="testkey-checkbox" class="m3">
+                <label for="testkey-checkbox">testkey</label>
+            </div>
+            <button class="m3 generate" str="generate">Generate</button>
+            <canvas width="300" height="300" class="hidden"></canvas>
+        </div>
     </div>
     <dialog id="filters">
         <div>

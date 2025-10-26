@@ -1,5 +1,7 @@
 import { applyLang, getStr } from "./i18n"
 import { formateTimestamp } from "../utils"
+import OwnDroidVersion from "./version.json"
+import QRCode from "qrcode"
 
 let str = {}
 
@@ -29,6 +31,7 @@ function initializePage() {
     initializeGreeting()
     initializeSettingsDialog()
     initializeFiltersDialog()
+    initializeQrCodeScreen()
     document.getElementById("home-btn").addEventListener("click", switchToHomeScreen)
     document.querySelectorAll(".close-dialog-btn").forEach(btn => {
         btn.addEventListener("click", () => {
@@ -48,7 +51,7 @@ function initializeGreeting() {
         input.value = ""
         switchToLogsViewerScreen()
     })
-    greeting.querySelector(".security-logs > button").addEventListener("click", () => {
+    greeting.querySelector(".security-logs button").addEventListener("click", () => {
         mode = 1
         input.click()
     })
@@ -56,6 +59,50 @@ function initializeGreeting() {
         mode = 2
         input.click()
     })
+    greeting.querySelector(".qr-code button").addEventListener("click", () => {
+        switchToQrCodeScreen()
+    })
+}
+
+function initializeQrCodeScreen() {
+    const container = document.querySelector("#content > .qr-code")
+    container.querySelectorAll(".apk-src input").forEach(it => {
+        it.addEventListener("change", () => {
+            if (it.value == "izzy") {
+                container.querySelector(".testkey").classList.add("hidden")
+            } else {
+                container.querySelector(".testkey").classList.remove("hidden")
+            }
+        })
+    })
+    container.querySelector("button.generate").addEventListener("click", () => {
+        const src = container.querySelector("input[name=apk-src]:checked").value
+        const testkey = src != "izzy" && container.querySelector("#testkey-checkbox").checked
+        generateQrCode(src, testkey)
+    })
+}
+
+function generateQrCode(apkSrc, testkey) {
+    const signature = testkey ? "pA2oClnRcMqpUM8VwYxFTUejmyaYnYtkDs10W6cb9dw" : "5dXbF2p0LFZrpgIKwk2T-r2l9pUtf8yunjpG6YSOg7U"
+    let srcUrl
+    if (apkSrc == "github") {
+        const v = OwnDroidVersion.name
+        const testkeyString = testkey ? "-testkey" : ""
+        srcUrl = `https://github.com/BinTianqi/OwnDroid/releases/download/${v}/OwnDroid-${v}${testkeyString}.apk`
+    } else if (apkSrc == "izzy") srcUrl = `https://apt.izzysoft.de/fdroid/repo/com.bintianqi.owndroid_${OwnDroidVersion.number}.apk`
+    const data = {
+        "android.app.extra.PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME": "com.bintianqi.owndroid/com.bintianqi.owndroid.Receiver",
+        "android.app.extra.PROVISIONING_DEVICE_ADMIN_SIGNATURE_CHECKSUM": signature,
+        "android.app.extra.PROVISIONING_DEVICE_ADMIN_PACKAGE_DOWNLOAD_LOCATION": srcUrl
+    }
+    const canvas = document.querySelector("canvas")
+    const options = {
+        width: 300
+    }
+    QRCode.toCanvas(canvas, JSON.stringify(data), options, (e) => {
+        if (e) console.error(e)
+    })
+    canvas.classList.remove("hidden")
 }
 
 function mapSecurityLogsLevel(l) {
@@ -267,15 +314,16 @@ function switchToHomeScreen() {
         })
         document.querySelector("#filters .network-logs").classList.add("hidden")
     }
+    if (mode == 3) {
+        document.querySelector("canvas").classList.add("hidden")
+        document.querySelector("#content > .qr-code").classList.add("hidden")
+    }
     document.querySelector("title").textContent = "OwnDroid"
     filters = structuredClone(defaultFilters)
     mode = 0
 }
 
 function switchToLogsViewerScreen() {
-    document.getElementById("home-btn").classList.remove("hidden")
-    document.querySelector("#topbar > a").classList.add("hidden")
-    document.getElementById("greeting").classList.add("hidden")
     document.getElementById("open-filters-btn").classList.remove("hidden")
     if (mode == 1) {
         document.querySelector("table.security-logs").classList.remove("hidden")
@@ -292,6 +340,14 @@ function switchToLogsViewerScreen() {
         loadNetworkLogs()
         statNetworkLogs()
     }
+}
+
+function switchToQrCodeScreen() {
+    mode = 3
+    document.getElementById("home-btn").classList.remove("hidden")
+    document.querySelector("#topbar > a").classList.add("hidden")
+    document.getElementById("greeting").classList.add("hidden")
+    document.querySelector("#content > .qr-code").classList.remove("hidden")
 }
 
 function statSecurityLogs() {

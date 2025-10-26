@@ -5,6 +5,7 @@ export default {
     succeeded: "成功",
     cancel: "取消",
     apply: "应用",
+    start: "开始",
 
     security_logs_viewer: "安全日志查看器",
     network_logs_viewer: "网络日志查看器",
@@ -112,5 +113,9 @@ export default {
     password_history_length: "密码历史长度: ",
     user_restriction: "用户限制: ",
     event: "事件: ",
-    file_path: "文件路径: "
+    file_path: "文件路径: ",
+
+    generate_qr_code: "生成二维码",
+    apk_download_src: "APK下载源",
+    generate: "生成"
 }
