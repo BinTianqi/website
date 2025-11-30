@@ -3,7 +3,7 @@ import myVitePlugin from "./src/my-vite-plugin.js";
 
 export default defineConfig({
     root: "src",
-    plugins: [ myVitePlugin("src") ],
+    plugins: [ myVitePlugin(["src/icons/svgs"]) ],
     build: {
         outDir: "../dist",
         emptyOutDir: true,

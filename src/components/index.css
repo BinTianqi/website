@@ -7,9 +7,6 @@ button.m3 {
     font-size: 14px;
     font-weight: 600;
     line-height: 20px;
-}
-
-button.m3 {
     background-color: var(--md-sys-color-primary);
     color: var(--md-sys-color-on-primary);
     &:disabled {
@@ -35,6 +32,22 @@ button.m3.tonal {
     &:active:not(:disabled) {
         background-color: color-mix(in srgb, var(--md-sys-color-secondary-container), var(--md-sys-color-on-secondary-container) 10%);
         color: color-mix(in srgb, var(--md-sys-color-on-secondary-container), var(--md-sys-color-on-secondary-container) 10%);
+    }
+}
+button.m3.text {
+    background-color: transparent;
+    color: var(--md-sys-color-primary);
+    &:disabled {
+        background-color: rgb(from var(--md-sys-color-surface) r g b / 0.1);
+        color: rgb(from var(--md-sys-color-surface) r g b / 0.38);
+    }
+    &:hover:not(:disabled) {
+        background-color: rgb(from var(--md-sys-color-primary) r g b / 0.08);
+        color: color-mix(in srgb, var(--md-sys-color-primary), var(--md-sys-color-primary) 8%);
+    }
+    &:active:not(:disabled) {
+        background-color: rgb(from var(--md-sys-color-primary) r g b / 0.1);
+        color: color-mix(in srgb, var(--md-sys-color-primary), var(--md-sys-color-primary) 10%);
     }
 }
 

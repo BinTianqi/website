@@ -91,9 +91,10 @@ function generateQrCode(apkSrc, testkey) {
         srcUrl = `https://github.com/BinTianqi/OwnDroid/releases/download/${v}/OwnDroid-${v}${testkeyString}.apk`
     } else if (apkSrc == "izzy") srcUrl = `https://apt.izzysoft.de/fdroid/repo/com.bintianqi.owndroid_${OwnDroidVersion.number}.apk`
     const data = {
-        "android.app.extra.PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME": "com.bintianqi.owndroid/com.bintianqi.owndroid.Receiver",
+        "android.app.extra.PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME": "com.bintianqi.owndroid/.Receiver",
         "android.app.extra.PROVISIONING_DEVICE_ADMIN_SIGNATURE_CHECKSUM": signature,
-        "android.app.extra.PROVISIONING_DEVICE_ADMIN_PACKAGE_DOWNLOAD_LOCATION": srcUrl
+        "android.app.extra.PROVISIONING_DEVICE_ADMIN_PACKAGE_DOWNLOAD_LOCATION": srcUrl,
+        "android.app.extra.PROVISIONING_SKIP_ENCRYPTION": true
     }
     const canvas = document.querySelector("canvas")
     const options = {
