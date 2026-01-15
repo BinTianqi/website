@@ -1,0 +1,3 @@
+User-agent: *
+Sitemap: https://bintianqi.com/sitemap.xml
+Sitemap: https://bintianqi.com/blog/sitemap.xml
