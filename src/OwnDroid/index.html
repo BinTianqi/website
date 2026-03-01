@@ -65,22 +65,15 @@
             <tbody></tbody>
         </table>
         <div class="qr-code hidden">
-            <h3 str="apk_download_src">APK download source</h3>
-            <div class="apk-src">
-                <div>
-                    <input type="radio" id="apk-src-github" class="m3" name="apk-src" value="github" checked>
-                    <label for="apk-src-github">GitHub Releases</label>
-                </div>
-                <div>
-                    <input type="radio" id="apk-src-izzy" class="m3" name="apk-src" value="izzy">
-                    <label for="apk-src-izzy">IzzyOnDroid</label>
-                </div>
+            <div class="link">
+                <label for="apk-link-textarea">APK URL</label>
+                <textarea id="apk-link-textarea"></textarea>
             </div>
             <div class="testkey">
                 <input type="checkbox" id="testkey-checkbox" class="m3">
                 <label for="testkey-checkbox">testkey</label>
             </div>
-            <button class="m3 generate" str="generate">Generate</button>
+            <button class="m3 generate" str="generate" disabled>Generate</button>
             <canvas width="300" height="300" class="hidden"></canvas>
         </div>
     </div>

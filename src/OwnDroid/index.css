@@ -26,8 +26,15 @@
         h3 {
             margin: 10px 0;
         }
-        div.apk-src {
-            margin-bottom: 10px;
+        > .link {
+            > label {
+                display: block;
+            }
+            > textarea {
+                width: 100%;
+                height: 60px;
+                resize: none;
+            }
         }
         input, label {
             vertical-align: middle;

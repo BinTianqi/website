@@ -116,6 +116,5 @@ export default {
     file_path: "File path: ",
 
     generate_qr_code: "Generate QR code",
-    apk_download_src: "APK download src",
     generate: "Generate"
 }

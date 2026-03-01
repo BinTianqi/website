@@ -1,6 +1,5 @@
 import { applyLang, getStr } from "./i18n"
 import { formateTimestamp } from "../utils"
-import OwnDroidVersion from "./version.json"
 import QRCode from "qrcode"
 
 let str = {}
@@ -66,34 +65,30 @@ function initializeGreeting() {
 
 function initializeQrCodeScreen() {
     const container = document.querySelector("#content > .qr-code")
-    container.querySelectorAll(".apk-src input").forEach(it => {
-        it.addEventListener("change", () => {
-            if (it.value == "izzy") {
-                container.querySelector(".testkey").classList.add("hidden")
-            } else {
-                container.querySelector(".testkey").classList.remove("hidden")
-            }
-        })
+    const textarea = container.querySelector("textarea")
+    const generateBtn = container.querySelector("button.generate")
+    textarea.addEventListener("input", () => {
+        let url;
+        try {
+            url = new URL(textarea.value);
+        } catch (_) {
+            return false;
+        }
+        generateBtn.disabled = !(url.protocol.startsWith("http") && url.pathname.endsWith(".apk"))
     })
     container.querySelector("button.generate").addEventListener("click", () => {
-        const src = container.querySelector("input[name=apk-src]:checked").value
-        const testkey = src != "izzy" && container.querySelector("#testkey-checkbox").checked
+        const src = container.querySelector("textarea").value
+        const testkey = container.querySelector("#testkey-checkbox").checked
         generateQrCode(src, testkey)
     })
 }
 
 function generateQrCode(apkSrc, testkey) {
     const signature = testkey ? "pA2oClnRcMqpUM8VwYxFTUejmyaYnYtkDs10W6cb9dw" : "5dXbF2p0LFZrpgIKwk2T-r2l9pUtf8yunjpG6YSOg7U"
-    let srcUrl
-    if (apkSrc == "github") {
-        const v = OwnDroidVersion.name
-        const testkeyString = testkey ? "-testkey" : ""
-        srcUrl = `https://github.com/BinTianqi/OwnDroid/releases/download/${v}/OwnDroid-${v}${testkeyString}.apk`
-    } else if (apkSrc == "izzy") srcUrl = `https://apt.izzysoft.de/fdroid/repo/com.bintianqi.owndroid_${OwnDroidVersion.number}.apk`
     const data = {
         "android.app.extra.PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME": "com.bintianqi.owndroid/.Receiver",
         "android.app.extra.PROVISIONING_DEVICE_ADMIN_SIGNATURE_CHECKSUM": signature,
-        "android.app.extra.PROVISIONING_DEVICE_ADMIN_PACKAGE_DOWNLOAD_LOCATION": srcUrl,
+        "android.app.extra.PROVISIONING_DEVICE_ADMIN_PACKAGE_DOWNLOAD_LOCATION": apkSrc,
         "android.app.extra.PROVISIONING_SKIP_ENCRYPTION": true
     }
     const canvas = document.querySelector("canvas")

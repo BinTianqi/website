@@ -116,6 +116,5 @@ export default {
     file_path: "文件路径: ",
 
     generate_qr_code: "生成二维码",
-    apk_download_src: "APK下载源",
     generate: "生成"
 }
