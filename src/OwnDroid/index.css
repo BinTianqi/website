@@ -27,6 +27,8 @@ body > div.content {
 
 #greeting-view {
     width: max-content;
+    max-width: 100%;
+    box-sizing: border-box;
     margin: 0 auto;
     > div {
         display: flex;

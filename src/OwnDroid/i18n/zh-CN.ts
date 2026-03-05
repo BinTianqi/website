@@ -7,6 +7,11 @@ export default {
     apply: "应用",
     start: "开始",
 
+    short_description: "OwnDroid使用安卓device owner特权管理你的设备。",
+    project_homepage: "项目主页 (GitHub)",
+    utilities: "工具",
+    utilities_run_locally: "这些工具在本地运行，不会上传任何数据。",
+
     security_logs_viewer: "安全日志查看器",
     network_logs_viewer: "网络日志查看器",
 

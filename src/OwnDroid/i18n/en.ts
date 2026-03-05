@@ -7,6 +7,11 @@ export default {
     apply: "Apply",
     start: "Start",
 
+    short_description: "OwnDroid uses Android device owner privilege to manage your device.",
+    project_homepage: "Project homepage (GitHub)",
+    utilities: "Utilities",
+    utilities_run_locally: "These utilities run locally and do not upload any data.",
+
     security_logs_viewer: "Security logs viewer",
     network_logs_viewer: "Network logs viewer",
 
