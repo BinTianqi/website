@@ -4,7 +4,7 @@
     <title>OwnDroid</title>
     <meta name="viewport" content="width=device-width">
     <meta charset="UTF-8">
-    <script src="./index.js" type="module"></script>
+    <script src="index.ts" type="module"></script>
     <link rel="stylesheet" href="./index.css">
     <link rel="stylesheet" href="../general.css">
     <link rel="stylesheet" href="../theme/m3.css">
@@ -25,150 +25,141 @@
             </button>
         </div>
     </div>
-    <div id="content">
-        <div id="greeting">
-            <div class="security-logs">
-                <a str="view_security_logs">View security logs</a>
-                <button str="open_file" class="m3 filled">Open file</button>
-            </div>
-            <div class="network-logs">
-                <a str="view_network_logs">View network logs</a>
-                <button str="open_file" class="m3 filled">Open file</button>
-            </div>
-            <div class="qr-code">
-                <span str="generate_qr_code">Generate QR code</span>
-                <button class="m3 filled" str="start">Start</button>
-            </div>
+    <div class="content active" id="greeting-view">
+        <div class="security-logs">
+            <a data-i18n="view_security_logs">View security logs</a>
+            <button data-i18n="open_file" class="m3 filled">Open file</button>
         </div>
-        <table class="security-logs hidden">
-            <thead>
-                <tr>
-                    <th class="id">ID</th>
-                    <th str="th_time" class="time">Time</th>
-                    <th str="th_level" class="level">Level</th>
-                    <th str="th_event" class="event">Event</th>
-                    <th str="th_details" class="details">Details</th>
-                </tr>
-	    	</thead>
-            <tbody></tbody>
-        </table>
-        <table class="network-logs hidden">
-            <thead>
-                <tr>
-                    <th class="id">ID</th>
-                    <th str="th_time" class="time">Time</th>
-                    <th str="th_package" class="package">Package</th>
-                    <th str="th_type" class="type">Type</th>
-                    <th str="th_details" class="details">Details</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-        <div class="qr-code hidden">
-            <div class="link">
-                <label for="apk-link-textarea">APK URL</label>
-                <textarea id="apk-link-textarea"></textarea>
-            </div>
-            <div class="testkey">
-                <input type="checkbox" id="testkey-checkbox" class="m3">
-                <label for="testkey-checkbox">testkey</label>
-            </div>
-            <button class="m3 generate" str="generate" disabled>Generate</button>
-            <canvas width="300" height="300" class="hidden"></canvas>
+        <div class="network-logs">
+            <a data-i18n="view_network_logs">View network logs</a>
+            <button data-i18n="open_file" class="m3 filled">Open file</button>
+        </div>
+        <div class="qr-code">
+            <span data-i18n="generate_qr_code">Generate QR code</span>
+            <button class="m3 filled" data-i18n="start">Start</button>
         </div>
     </div>
-    <dialog id="filters">
-        <div>
-            <h2 str="filters">Filters</h2>
-            <div class="security-logs hidden">
-                <h3 str="columns">Columns</h3>
+    <div class="content" id="security-logs-view">
+        <table class="security-logs">
+            <thead></thead>
+            <tbody></tbody>
+        </table>
+        <dialog>
+            <div>
+                <h2 data-i18n="filters">Filters</h2>
+                <h3 data-i18n="columns">Columns</h3>
                 <div class="columns">
                     <div>
-                        <input type="checkbox" name="id" id="s-id-checkbox" class="m3">
+                        <input type="checkbox" data-column="id" id="s-id-checkbox" class="m3">
                         <label for="s-id-checkbox">ID</label>
                     </div>
                     <div>
-                        <input type="checkbox" name="time" id="s-time-checkbox" class="m3"/>
-                        <label str="th_time" for="s-time-checkbox">Time</label>
+                        <input type="checkbox" data-column="time" id="s-time-checkbox" class="m3"/>
+                        <label data-i18n="th_time" for="s-time-checkbox">Time</label>
                     </div>
                     <div>
-                        <input type="checkbox" name="level" id="s-level-checkbox" class="m3"/>
-                        <label str="th_level" for="s-level-checkbox">Level</label>
+                        <input type="checkbox" data-column="level" id="s-level-checkbox" class="m3"/>
+                        <label data-i18n="th_level" for="s-level-checkbox">Level</label>
                     </div>
                     <div>
-                        <input type="checkbox" name="event" id="s-event-checkbox" class="m3"/>
-                        <label str="th_event" for="s-event-checkbox">Event</label>
+                        <input type="checkbox" data-column="event" id="s-event-checkbox" class="m3"/>
+                        <label data-i18n="th_event" for="s-event-checkbox">Event</label>
                     </div>
                     <div>
-                        <input type="checkbox" name="details" id="s-details-checkbox" class="m3"/>
-                        <label str="th_details" for="s-details-checkbox">Details</label>
+                        <input type="checkbox" data-column="details" id="s-details-checkbox" class="m3"/>
+                        <label data-i18n="th_details" for="s-details-checkbox">Details</label>
                     </div>
                 </div>
-                <h3 str="levels">Levels</h3>
+                <h3 data-i18n="levels">Levels</h3>
                 <div class="levels">
                     <div>
-                        <input type="checkbox" name="1" id="s-info-checkbox" class="m3">
+                        <input type="checkbox" data-level="1" id="s-info-checkbox" class="m3">
                         <label for="s-info-checkbox">info<span></span></label>
                     </div>
                     <div>
-                        <input type="checkbox" name="2" id="s-warning-checkbox" class="m3">
+                        <input type="checkbox" data-level="2" id="s-warning-checkbox" class="m3">
                         <label for="s-warning-checkbox">warning<span></span></label>
                     </div>
                     <div>
-                        <input type="checkbox" name="3" id="s-error-checkbox">
+                        <input type="checkbox" data-level="3" id="s-error-checkbox" class="m3">
                         <label for="s-error-checkbox">error<span></span></label>
                     </div>
                 </div>
-                <h3 str="event_types">Event types</h3>
+                <h3 data-i18n="event_types">Event types</h3>
                 <div class="tags"></div>
             </div>
-            <div class="network-logs hidden">
-                <h3 str="columns">Columns</h3>
+            <div class="buttons-row">
+                <button data-i18n="cancel" class="m3 tonal close">Cancel</button>
+                <button data-i18n="apply" class="m3 filled apply">Apply</button>
+            </div>
+        </dialog>
+    </div>
+    <div class="content" id="network-logs-view">
+        <table class="network-logs">
+            <thead></thead>
+            <tbody></tbody>
+        </table>
+        <dialog>
+            <div>
+                <h2 data-i18n="filters">Filters</h2>
+                <h3 data-i18n="columns">Columns</h3>
                 <div class="columns">
                     <div>
-                        <input type="checkbox" name="id" id="n-id-checkbox" class="m3"/>
+                        <input type="checkbox" data-column="id" id="n-id-checkbox" class="m3"/>
                         <label for="n-id-checkbox">ID</label>
                     </div>
                     <div>
-                        <input type="checkbox" name="time" id="n-time-checkbox" class="m3"/>
-                        <label str="th_time" for="n-time-checkbox">Time</label>
+                        <input type="checkbox" data-column="time" id="n-time-checkbox" class="m3"/>
+                        <label data-i18n="th_time" for="n-time-checkbox">Time</label>
                     </div>
                     <div>
-                        <input type="checkbox" name="package" id="n-package-checkbox" class="m3"/>
-                        <label str="th_package" for="n-package-checkbox">Package</label>
+                        <input type="checkbox" data-column="package" id="n-package-checkbox" class="m3"/>
+                        <label data-i18n="th_package" for="n-package-checkbox">Package</label>
                     </div>
                     <div>
-                        <input type="checkbox" name="type" id="n-type-checkbox" class="m3"/>
-                        <label str="th_type" for="n-type-checkbox">Type</label>
+                        <input type="checkbox" data-column="type" id="n-type-checkbox" class="m3"/>
+                        <label data-i18n="th_type" for="n-type-checkbox">Type</label>
                     </div>
                     <div>
-                        <input type="checkbox" name="details" id="n-details-checkbox" class="m3"/>
-                        <label str="th_details" for="n-details-checkbox">Details</label>
+                        <input type="checkbox" data-column="details" id="n-details-checkbox" class="m3"/>
+                        <label data-i18n="th_details" for="n-details-checkbox">Details</label>
                     </div>
                 </div>
-                <h3 str="types">Types</h3>
+                <h3 data-i18n="types">Types</h3>
                 <div class="types">
                     <div>
-                        <input type="checkbox" name="connect" id="n-connect-checkbox" class="m3">
-                        <label for="n-connect-checkbox"><span str="connect"></span><span></span></label>
+                        <input type="checkbox" data-type="connect" id="n-connect-checkbox" class="m3">
+                        <label for="n-connect-checkbox"><span data-i18n="connect"></span><span></span></label>
                     </div>
                     <div>
-                        <input type="checkbox" name="dns" id="n-dns-checkbox" class="m3">
+                        <input type="checkbox" data-type="dns" id="n-dns-checkbox" class="m3">
                         <label for="n-dns-checkbox">DNS<span></span></label>
                     </div>
                 </div>
             </div>
+            <div class="buttons-row">
+                <button data-i18n="cancel" class="m3 tonal close">Cancel</button>
+                <button data-i18n="apply" class="m3 filled apply">Apply</button>
+            </div>
+        </dialog>
+    </div>
+    <div class="content" id="qr-code-view">
+        <div class="link">
+            <label for="apk-link-textarea">APK URL</label>
+            <textarea id="apk-link-textarea"></textarea>
         </div>
-        <div class="buttons-row">
-            <button str="cancel" class="m3 tonal close-dialog-btn">Cancel</button>
-            <button str="apply" class="m3 filled apply-btn">Apply</button>
+        <div class="testkey">
+            <input type="checkbox" id="testkey-checkbox" class="m3">
+            <label for="testkey-checkbox">testkey</label>
         </div>
-    </dialog>
+        <button class="m3 generate" data-i18n="generate" disabled>Generate</button>
+        <canvas width="300" height="300" class="hidden"></canvas>
+    </div>
     <dialog id="settings">
         <div>
-            <h2 str="settings">Settings</h2>
+            <h2 data-i18n="settings">Settings</h2>
             <div>
-                <label str="language" for="select-lang">Select language</label>
+                <label data-i18n="language" for="select-lang">Select language</label>
                 <select name="select-lang" id="select-lang" class="m3">
                     <option value="default">Default</option>
                     <option value="en">English</option>
@@ -177,8 +168,8 @@
             </div>
         </div>
         <div class="buttons-row">
-            <button str="cancel" class="m3 tonal close-dialog-btn">Cancel</button>
-            <button str="apply" class="m3 filled apply-btn">Apply</button>
+            <button data-i18n="cancel" class="m3 tonal close">Cancel</button>
+            <button data-i18n="apply" class="m3 filled apply">Apply</button>
         </div>
     </dialog>
 </body>

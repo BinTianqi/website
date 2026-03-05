@@ -18,40 +18,14 @@
     }
 }
 
-#content {
+body > div.content {
     padding: 70px 10px 40px 10px;
-    > .qr-code {
-        width: 320px;
-        margin: 0 auto;
-        h3 {
-            margin: 10px 0;
-        }
-        > .link {
-            > label {
-                display: block;
-            }
-            > textarea {
-                width: 100%;
-                height: 60px;
-                resize: none;
-            }
-        }
-        input, label {
-            vertical-align: middle;
-        }
-        button.generate {
-            display: block;
-            width: 200px;
-            margin: 20px auto;
-        }
-        canvas {
-            display: block;
-            margin: 0 auto;
-        }
+    &:not(.active) {
+        display: none;
     }
 }
 
-#greeting {
+#greeting-view {
     width: max-content;
     margin: 0 auto;
     > div {
@@ -69,26 +43,79 @@
     }
 }
 
-table {
-    border-collapse: collapse;
-    margin: 0 auto;
-}
-tr {
-    border-bottom: 1px solid var(--md-sys-color-outline-variant);
-}
-
-td, th {
-    padding: 0.5rem;
-}
-
-th {
-    text-align: start;
-}
-
-td.details {
-    white-space: pre-wrap;
-    > pre {
+#security-logs-view, #network-logs-view {
+    table {
+        border-collapse: collapse;
+        margin: 0 auto;
+    }
+    tr {
+        border-bottom: 1px solid var(--md-sys-color-outline-variant);
+    }
+    td, th {
+        padding: 0.5rem;
+    }
+    th {
+        text-align: start;
+    }
+    td.details {
         white-space: pre-wrap;
+        > pre {
+            white-space: pre-wrap;
+        }
+    }
+    dialog {
+        h3 {
+            margin: 5px 0 10px 0;
+        }
+        .columns, .levels, .types {
+            margin-bottom: 10px;
+            > div {
+                display: inline-block;
+                margin-right: 5px;
+            }
+        }
+        :is(.columns, .levels, .tags, .types) > div > * {
+            vertical-align: middle;
+        }
+        .tags > div {
+            margin-bottom: 5px;
+            input {
+                margin-right: 5px;
+            }
+        }
+        label > span:last-child {
+            margin-left: 3px;
+        }
+    }
+}
+
+#qr-code-view {
+    width: 320px;
+    margin: 0 auto;
+    h3 {
+        margin: 10px 0;
+    }
+    > .link {
+        > label {
+            display: block;
+        }
+        > textarea {
+            width: 100%;
+            height: 60px;
+            resize: none;
+        }
+    }
+    input, label {
+        vertical-align: middle;
+    }
+    button.generate {
+        display: block;
+        width: 200px;
+        margin: 20px auto;
+    }
+    canvas {
+        display: block;
+        margin: 0 auto;
     }
 }
 
@@ -113,32 +140,6 @@ dialog {
         margin-top: 20px;
     }
     &::backdrop {
-        backdrop-filter: blur(2px);
+        backdrop-filter: blur(3px);
     }
 }
-
-#filters {
-    h3 {
-        margin: 5px 0 10px 0;
-    }
-    .columns, .levels, .types {
-        margin-bottom: 10px;
-        > div {
-            display: inline-block;
-            margin-right: 5px;
-        }
-    }
-    :is(.columns, .levels, .tags, .types) > div > * {
-        vertical-align: middle;
-    }
-    .tags > div {
-        margin-bottom: 5px;
-        input {
-            margin-right: 5px;
-        }
-    }
-    label > span:last-child {
-        margin-left: 3px;
-    }
-}
-

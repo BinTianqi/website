@@ -114,6 +114,7 @@ export default {
     user_restriction: "User restriction: ",
     event: "Event: ",
     file_path: "File path: ",
+    reason: "Reason: ",
 
     generate_qr_code: "Generate QR code",
     generate: "Generate"

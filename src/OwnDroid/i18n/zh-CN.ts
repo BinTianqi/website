@@ -114,6 +114,7 @@ export default {
     user_restriction: "用户限制: ",
     event: "事件: ",
     file_path: "文件路径: ",
+    reason: "原因：",
 
     generate_qr_code: "生成二维码",
     generate: "生成"
