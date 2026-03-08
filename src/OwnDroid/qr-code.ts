@@ -7,7 +7,7 @@ export default class QrCodeController {
     canvas = this.view.querySelector("canvas")!!
 
     constructor() {
-        this.linkTextarea.addEventListener("click", () => {
+        this.linkTextarea.addEventListener("input", () => {
             this.generateBtn.disabled = !QrCodeController.checkUrl(this.linkTextarea.value)
         })
         this.generateBtn.addEventListener("click", () => {
@@ -47,6 +47,6 @@ export default class QrCodeController {
         } catch (_) {
             return false;
         }
-        return !(url.protocol.startsWith("http") && url.pathname.endsWith(".apk"))
+        return url.protocol.startsWith("http") && url.pathname.endsWith(".apk")
     }
 }

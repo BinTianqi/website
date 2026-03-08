@@ -13,8 +13,22 @@
         margin-left: 5px;
         color: var(--md-sys-color-on-surface);
     }
+    #pager {
+        display: inline-flex;
+        align-items: center;
+        span {
+            cursor: pointer;
+            margin: 0 5px;
+        }
+    }
     #icons-row {
         margin-right: 20px;
+    }
+}
+
+#pager-dialog {
+    label {
+        margin-bottom: 5px;
     }
 }
 

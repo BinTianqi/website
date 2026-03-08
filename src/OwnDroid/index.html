@@ -16,6 +16,15 @@
         <button id="home-btn" class="hidden icon-button">
             <icon name="home"/>
         </button>
+        <div id="pager" class="hidden">
+            <button class="previous icon-button" disabled>
+                <icon name="keyboard_arrow_left"/>
+            </button>
+            <span></span>
+            <button class="next icon-button" disabled>
+                <icon name="keyboard_arrow_right"/>
+            </button>
+        </div>
         <div id="icons-row">
             <button id="open-filters-btn" class="hidden icon-button">
                 <icon name="filter"/>
@@ -151,7 +160,7 @@
     <div class="content" id="qr-code-view">
         <div class="link">
             <label for="apk-link-textarea">APK URL</label>
-            <textarea id="apk-link-textarea"></textarea>
+            <textarea id="apk-link-textarea" class="m3"></textarea>
         </div>
         <div class="testkey">
             <input type="checkbox" id="testkey-checkbox" class="m3">
@@ -175,6 +184,14 @@
         <div class="buttons-row">
             <button data-i18n="cancel" class="m3 tonal close">Cancel</button>
             <button data-i18n="apply" class="m3 filled apply">Apply</button>
+        </div>
+    </dialog>
+    <dialog id="pager-dialog">
+        <label data-i18n="page" for="page-input"></label>
+        <input id="page-input" type="number" min="1" class="m3" required>
+        <div class="buttons-row">
+            <button data-i18n="cancel" class="m3 tonal close"></button>
+            <button data-i18n="jump" class="m3 filled jump" disabled></button>
         </div>
     </dialog>
 </body>

@@ -30,6 +30,7 @@ export default {
     event_types: "Event types",
     types: "Types",
 
+    page: "Page",
     page_number: "Page number",
     jump: "Jump",
 

@@ -30,6 +30,7 @@ export default {
     event_types: "事件类型",
     types: "类型",
 
+    page: "页",
     page_number: "页数",
     jump: "跳转",
 

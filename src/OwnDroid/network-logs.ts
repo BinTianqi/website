@@ -1,17 +1,17 @@
-import type {Log} from "./log-viewer-common.js"
+import type {Log, LogFiltersDialogView, BaseLogFilters, BaseLogsStat} from "./log-viewer-common.js"
+import {LogsController, LogsView} from "./log-viewer-common.js"
 import {formateTimestamp} from "../utils/index.js";
 import {t} from "./i18n/index.js";
 
-interface NetworkLogFilters {
-    columns: string[]
+interface NetworkLogFilters extends BaseLogFilters {
     types: string[]
 }
 
-interface NetworkLogsStat {
+interface NetworkLogsStat extends BaseLogsStat {
     type: { [key: string]: number }
 }
 
-export default class NetworkLogsController {
+export default class NetworkLogsController extends LogsController {
     view = new NetworkLogsView()
     dialog = new NetworkLogsFiltersDialogView()
     defaultFilters: NetworkLogFilters = {
@@ -19,70 +19,33 @@ export default class NetworkLogsController {
         types: ["connect", "dns"]
     }
     filters = structuredClone(this.defaultFilters)
-    networkLogs: Log[] = []
 
-    constructor() {
-        this.dialog.bindApply((f) => {
-            this.filters = f
-            this.view.clearTable()
-            this.view.renderLogs(this.filterNetworkLogs(), this.filters)
-        })
-    }
-
-    loadLogs(logs: Log[]) {
-        this.networkLogs.push(...logs)
-        this.view.renderLogs(this.filterNetworkLogs(), this.filters)
-        this.dialog.renderStat(this.statNetworkLogs())
-    }
-
-    reload() {
-        this.view.clearTable()
-        this.view.renderLogs(this.filterNetworkLogs(), this.filters)
-    }
-
-    filterNetworkLogs() {
-        return this.networkLogs.filter(log => {
+    filterLogs() {
+        return this.logs.filter(log => {
             return this.filters.types.includes(log.type)
         })
     }
 
-    openFiltersDialog() {
-        this.dialog.open(this.filters)
-    }
-
-    statNetworkLogs() {
+    statLogs() {
         const stat: NetworkLogsStat = {
             type: {
                 connect: 0,
                 dns: 0
             }
         }
-        for (const log of this.networkLogs) {
+        for (const log of this.logs) {
             stat.type[log.type as keyof typeof stat.type]++
         }
         return stat
     }
-
-    clear() {
-        this.networkLogs.length = 0
-        this.filters = structuredClone(this.defaultFilters)
-        this.view.clearTable()
-    }
 }
 
-class NetworkLogsView {
+class NetworkLogsView extends LogsView {
     view = document.getElementById("network-logs-view")!!
     thead = this.view.querySelector("thead")!!
     tbody = this.view.querySelector("tbody")!!
 
-    renderLogs(logs: Log[], filter: NetworkLogFilters) {
-        this.thead.append(NetworkLogsView.renderThead(filter.columns))
-        for (const log of logs) {
-            this.tbody.append(NetworkLogsView.renderRow(log, filter.columns))
-        }
-    }
-
-    static renderThead(columns: string[]) {
+    renderThead(columns: string[]) {
         const row = document.createElement("tr")
         if (columns.includes("id")) {
             const tId = document.createElement("th")
@@ -112,7 +75,7 @@ class NetworkLogsView {
         return row
     }
 
-    static renderRow(log: Log, columns: string[]) {
+    renderRow(log: Log, columns: string[]) {
         const row = document.createElement("tr")
         if (columns.includes("id")) {
             const tId = document.createElement("td")
@@ -145,14 +108,9 @@ class NetworkLogsView {
         }
         return row
     }
-
-    clearTable() {
-        this.thead.replaceChildren()
-        this.tbody.replaceChildren()
-    }
 }
 
-class NetworkLogsFiltersDialogView {
+class NetworkLogsFiltersDialogView implements LogFiltersDialogView {
     dialog = document.querySelector("#network-logs-view > dialog") as HTMLDialogElement
     applyBtn = this.dialog.querySelector("button.apply") as HTMLButtonElement
 

@@ -1,19 +1,19 @@
-import type {Log} from "./log-viewer-common.js"
+import type {Log, BaseLogsStat, BaseLogFilters, LogFiltersDialogView} from "./log-viewer-common.js"
+import {LogsController, LogsView} from "./log-viewer-common.js"
 import {t, t2} from "./i18n/index.js"
 import {formateTimestamp} from "../utils/index.js"
 
-interface SecurityLogFilters {
+interface SecurityLogFilters extends BaseLogFilters {
     levels: number[]
-    columns: string[]
     tags: number[]
 }
 
-interface SecurityLogsStat {
+interface SecurityLogsStat extends BaseLogsStat {
     levels: { [key: number]: number }
     tags: { [key: number]: number }
 }
 
-export default class SecurityLogsController {
+export default class SecurityLogsController extends LogsController {
     defaultFilters: SecurityLogFilters = {
         levels: [1, 2, 3],
         columns: ["id", "time", "level", "event", "details"],
@@ -23,40 +23,16 @@ export default class SecurityLogsController {
             210027, 210028, 210037, 210038, 210023]
     }
     filters = structuredClone(this.defaultFilters)
-    securityLogs: Log[] = []
     view = new SecurityLogsView()
     dialog = new SecurityLogsFiltersDialogView(this.defaultFilters.tags)
 
-    constructor() {
-        this.dialog.bindApply((f) => {
-            this.filters = f
-            this.view.clearTable()
-            this.view.render(this.filterLogs(), this.filters)
-        })
-    }
-
-    loadLogs(data: Log[]) {
-        this.securityLogs.push(...data)
-        this.view.render(this.securityLogs, this.filters)
-        this.dialog.renderStat(this.statSecurityLogs())
-    }
-
-    reload() {
-        this.view.clearTable()
-        this.view.render(this.filterLogs(), this.filters)
-    }
-
     filterLogs(): Log[] {
-        return this.securityLogs.filter((log) => {
+        return this.logs.filter((log) => {
             return this.filters.levels.includes(log.level) && this.filters.tags.includes(log.tag)
         })
     }
 
-    openFiltersDialog() {
-        this.dialog.open(this.filters)
-    }
-
-    statSecurityLogs(): SecurityLogsStat {
+    statLogs(): SecurityLogsStat {
         const stat: SecurityLogsStat = {
             levels: {1: 0, 2: 0, 3: 0},
             tags: {}
@@ -64,32 +40,20 @@ export default class SecurityLogsController {
         this.defaultFilters.tags.forEach(tag => {
             stat.tags[tag] = 0
         })
-        for (const log of this.securityLogs) {
+        for (const log of this.logs) {
             stat.levels[log.level]++
             stat.tags[log.tag]++
         }
         return stat
     }
-
-    clear() {
-        this.view.clearTable()
-        this.filters = structuredClone(this.defaultFilters)
-    }
 }
 
-class SecurityLogsView {
+class SecurityLogsView extends LogsView {
     view = document.querySelector("#security-logs-view")!!
     thead = this.view.querySelector("thead")!!
     tbody = this.view.querySelector("tbody")!!
 
-    render(logs: Log[], filters: SecurityLogFilters) {
-        this.thead.append(SecurityLogsView.renderThead(filters.columns))
-        for (const log of logs) {
-            this.tbody.append(SecurityLogsView.renderRow(log, filters.columns))
-        }
-    }
-
-    static renderThead(columns: string[]) {
+    renderThead(columns: string[]) {
         const row = document.createElement("tr")
         if (columns.includes("id")) {
             const tId = document.createElement("th")
@@ -119,7 +83,7 @@ class SecurityLogsView {
         return row
     }
 
-    static renderRow(log: Log, columns: string[]) {
+    renderRow(log: Log, columns: string[]) {
         const row = document.createElement("tr")
         if (columns.includes("id")) {
             const tId = document.createElement("td")
@@ -133,7 +97,7 @@ class SecurityLogsView {
         }
         if (columns.includes("level")) {
             const tLevel = document.createElement("td")
-            tLevel.textContent = this.levelToString(log.level)
+            tLevel.textContent = SecurityLogsView.levelToString(log.level)
             row.append(tLevel)
         }
         if (columns.includes("event")) {
@@ -281,14 +245,9 @@ class SecurityLogsView {
         }
         return td
     }
-
-    clearTable() {
-        this.thead.replaceChildren()
-        this.tbody.replaceChildren()
-    }
 }
 
-class SecurityLogsFiltersDialogView {
+class SecurityLogsFiltersDialogView implements LogFiltersDialogView {
     dialog = document.querySelector("#security-logs-view > dialog") as HTMLDialogElement
     tagsDiv = this.dialog.querySelector("div.tags")!!
     applyBtn = this.dialog.querySelector("button.apply") as HTMLButtonElement
