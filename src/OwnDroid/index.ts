@@ -1,3 +1,8 @@
+import "../m3wc/components"
+import "../general.css"
+import "../theme/m3.css"
+import "./index.css"
+
 import QrCodeController from "./qr-code.js"
 import SecurityLogsController from "./security-logs.js"
 import NetworkLogsController from "./network-logs.js"

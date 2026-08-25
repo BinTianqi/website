@@ -1,0 +1,4 @@
+[submodule "src/m3wc"]
+	path = src/m3wc
+	url = https://github.com/BinTianqi/m3wc
+	branch = dev

@@ -5,31 +5,27 @@
     <meta name="viewport" content="width=device-width">
     <meta charset="UTF-8">
     <script src="index.ts" type="module"></script>
-    <link rel="stylesheet" href="./index.css">
-    <link rel="stylesheet" href="../general.css">
-    <link rel="stylesheet" href="../theme/m3.css">
-    <link rel="stylesheet" href="../components/index.css">
 </head>
 <body>
     <div id="topbar">
         <a>OwnDroid</a>
-        <button id="home-btn" class="hidden icon-button">
+        <button id="home-btn" class="m3 icon-button hidden">
             <icon name="home"/>
         </button>
         <div id="pager" class="hidden">
-            <button class="previous icon-button" disabled>
+            <button class="previous m3 icon-button" disabled>
                 <icon name="keyboard_arrow_left"/>
             </button>
             <span></span>
-            <button class="next icon-button" disabled>
+            <button class="next m3 icon-button" disabled>
                 <icon name="keyboard_arrow_right"/>
             </button>
         </div>
         <div id="icons-row">
-            <button id="open-filters-btn" class="hidden icon-button">
+            <button id="open-filters-btn" class="hidden m3 icon-button">
                 <icon name="filter"/>
             </button>
-            <button id="open-settings-btn" class="icon-button">
+            <button id="open-settings-btn" class="m3 icon-button">
                 <icon name="settings"/>
             </button>
         </div>
@@ -160,7 +156,7 @@
     <div class="content" id="qr-code-view">
         <div class="link">
             <label for="apk-link-textarea">APK URL</label>
-            <textarea id="apk-link-textarea" class="m3"></textarea>
+            <textarea id="apk-link-textarea" class="m3 outlined"></textarea>
         </div>
         <div class="testkey">
             <input type="checkbox" id="testkey-checkbox" class="m3">
@@ -174,7 +170,7 @@
             <h2 data-i18n="settings">Settings</h2>
             <div>
                 <label data-i18n="language" for="select-lang">Select language</label>
-                <select name="select-lang" id="select-lang" class="m3">
+                <select name="select-lang" id="select-lang" class="m3 outlined">
                     <option value="default">Default</option>
                     <option value="en">English</option>
                     <option value="zh-CN">简体中文</option>
@@ -188,7 +184,7 @@
     </dialog>
     <dialog id="pager-dialog">
         <label data-i18n="page" for="page-input"></label>
-        <input id="page-input" type="number" min="1" class="m3" required>
+        <input id="page-input" type="number" min="1" class="m3 outlined" required>
         <div class="buttons-row">
             <button data-i18n="cancel" class="m3 tonal close"></button>
             <button data-i18n="jump" class="m3 filled jump" disabled></button>

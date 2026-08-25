@@ -7,10 +7,10 @@ export default defineConfig({
     build: {
         outDir: "../dist",
         emptyOutDir: true,
-        rollupOptions: {
+        rolldownOptions: {
             input: {
-                "main": "src/index.html",
-                "OwnDroid": "src/OwnDroid/index.html"
+                main: "index.html",
+                OwnDroid: "OwnDroid/index.html",
             }
         },
         assetsInlineLimit: 0
