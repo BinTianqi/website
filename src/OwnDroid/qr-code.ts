@@ -1,24 +1,23 @@
 import QRCode from "qrcode"
+import { MyScreen } from "./common.js"
 
-export default class QrCodeController {
-    view = document.getElementById("qr-code-view")!!
-    linkTextarea = this.view.querySelector("textarea")!!
-    generateBtn = this.view.querySelector("button")!!
-    canvas = this.view.querySelector("canvas")!!
+export default class QrCodeScreen extends MyScreen {
+    linkTextarea = this.querySelector("textarea")!
+    testkeyInput = this.querySelector("input.testkey") as HTMLInputElement
+    generateBtn = this.querySelector("button")!
+    canvas = this.querySelector("canvas")!
 
-    constructor() {
+    connectedCallback() {
         this.linkTextarea.addEventListener("input", () => {
-            this.generateBtn.disabled = !QrCodeController.checkUrl(this.linkTextarea.value)
+            this.generateBtn.disabled = !QrCodeScreen.checkUrl(this.linkTextarea.value)
         })
         this.generateBtn.addEventListener("click", () => {
-            const src = this.linkTextarea.value
-            const testkey = (this.view.querySelector("#testkey-checkbox") as HTMLInputElement).checked
-            this.generateQrCode(src, testkey)
+            this.generateQrCode(this.linkTextarea.value, this.testkeyInput.checked)
         })
     }
 
-    generateQrCode(apkSrc: string, testkey: boolean) {
-        const signature = testkey ? "pA2oClnRcMqpUM8VwYxFTUejmyaYnYtkDs10W6cb9dw" : "5dXbF2p0LFZrpgIKwk2T-r2l9pUtf8yunjpG6YSOg7U"
+    private generateQrCode(apkSrc: string, testkey: boolean) {
+        const signature = testkey ? this.testkeySig : this.signedSig
         const data = {
             "android.app.extra.PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME": "com.bintianqi.owndroid/.Receiver",
             "android.app.extra.PROVISIONING_DEVICE_ADMIN_SIGNATURE_CHECKSUM": signature,
@@ -34,13 +33,13 @@ export default class QrCodeController {
         this.canvas.classList.remove("hidden")
     }
 
-    clear() {
+    override clear() {
         this.linkTextarea.value = ""
         this.generateBtn.disabled = true
         this.canvas.classList.add("hidden")
     }
 
-    static checkUrl(urlText: string) {
+    private static checkUrl(urlText: string) {
         let url;
         try {
             url = new URL(urlText);
@@ -49,4 +48,7 @@ export default class QrCodeController {
         }
         return url.protocol.startsWith("http") && url.pathname.endsWith(".apk")
     }
+
+    private testkeySig = "pA2oClnRcMqpUM8VwYxFTUejmyaYnYtkDs10W6cb9dw"
+    private signedSig = "5dXbF2p0LFZrpgIKwk2T-r2l9pUtf8yunjpG6YSOg7U"
 }

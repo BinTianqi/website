@@ -3,69 +3,62 @@ import "../general.css"
 import "../theme/m3.css"
 import "./index.css"
 
-import QrCodeController from "./qr-code.js"
-import SecurityLogsController from "./security-logs.js"
-import NetworkLogsController from "./network-logs.js"
-import type {LogsController} from "./log-viewer-common.js"
-import {t, applyLang} from "./i18n/index.js"
+import QrCodeScreen from "./qr-code.js"
+import { SecurityLogsScreen, SecurityLogsFilterDialog } from "./security-logs.js"
+import { NetworkLogsScreen, NetworkLogsFiltersDialog } from "./network-logs.js"
+import { LogsScreen } from "./log-viewer-common.js"
+import { t, applyLang } from "./i18n/index.js"
+import { MyScreen } from "./common.js"
+
+function registerCustomElements() {
+    customElements.define("security-logs-screen", SecurityLogsScreen)
+    customElements.define("security-logs-filter", SecurityLogsFilterDialog)
+    customElements.define("network-logs-screen", NetworkLogsScreen)
+    customElements.define("network-logs-filter", NetworkLogsFiltersDialog)
+    customElements.define("qr-code-screen", QrCodeScreen)
+    customElements.define("settings-dialog", SettingsDialog)
+    customElements.define("logs-pager", LogsPager)
+}
 
 class PageController {
     mode = 0
-    language = localStorage.getItem("language")
-    securityLogsController = new SecurityLogsController()
-    networkLogsController = new NetworkLogsController()
-    currentLogsController: LogsController = this.securityLogsController
-    qrCodeController = new QrCodeController()
-    settingsDialog = new SettingsDialogView()
-    pagerController = new PagerController()
-    pagerChip = document.getElementById("pager")!!
 
-    pageTitle = document.querySelector("title")!!
-    topBarTitle = document.querySelector("#topbar > a")!!
-    homeBtn = document.getElementById("home-btn")!!
-    openFiltersBtn = document.getElementById("open-filters-btn")!!
-    openSettingsBtn = document.getElementById("open-settings-btn")!!
-    greetingView = document.getElementById("greeting-view")!!
-    securityLogsView = document.getElementById("security-logs-view")!!
-    networkLogsView = document.getElementById("network-logs-view")!!
-    qrCodeView = document.getElementById("qr-code-view")!!
+    securityLogsScreen = document.querySelector("security-logs-screen") as SecurityLogsScreen
+    networkLogsScreen = document.querySelector("network-logs-screen") as NetworkLogsScreen
+    qrCodeScreen = document.querySelector("qr-code-screen") as QrCodeScreen
+    currentScreen: MyScreen = this.securityLogsScreen
+    currentLogsScreen: LogsScreen = this.securityLogsScreen
+
+    settingsDialog = document.querySelector("settings-dialog") as SettingsDialog
+    pager = document.querySelector("logs-pager") as LogsPager
+
+    pageTitle = document.querySelector("title")!
+    topBarTitle = document.querySelector("#topbar > a")!
+    homeBtn = document.getElementById("home-btn")!
+    openFiltersBtn = document.getElementById("open-filters-btn")!
+    openSettingsBtn = document.getElementById("open-settings-btn")!
+    greetingScreen = document.getElementById("greeting-view")!
 
     renderLogs() {
-        this.currentLogsController.render(
-            (this.pagerController.page - 1) * this.pagerController.pageSize, this.pagerController.pageSize
+        this.currentLogsScreen.render(
+            (this.pager.page - 1) * this.pager.pageSize, this.pager.pageSize
         )
     }
 
     constructor() {
-        applyLang(this.language)
-        this.securityLogsController.bindApplyFilters((l) => {
-            this.pagerController.setTotalLogs(l)
-            this.renderLogs()
+        applyLang(this.settingsDialog.language)
+        document.addEventListener("filters-updated", () => {
+            this.pager.setTotalLogs(this.currentLogsScreen.filteredLogs.length)
+            // pager will dispatch "page-switched" event, which triggers rendering
         })
-        this.networkLogsController.bindApplyFilters((l) => {
-            this.pagerController.setTotalLogs(l)
+        this.pager.addEventListener("page-switched", () => {
             this.renderLogs()
-        })
-        this.pagerController.bindSwitchPage(() => {
-            this.renderLogs()
-        })
-        this.settingsDialog.bindApply((l) => {
-            if (this.language != l) {
-                this.language = l
-                if (l == null) {
-                    localStorage.removeItem("language")
-                } else {
-                    localStorage.setItem("language", l)
-                }
-                applyLang(l)
-                this.renderLogs()
-            }
         })
         this.openSettingsBtn.addEventListener("click", () => {
-            this.settingsDialog.open(this.language)
+            this.settingsDialog.open()
         })
         this.openFiltersBtn.addEventListener("click", () => {
-            this.currentLogsController.openFiltersDialog()
+            this.currentLogsScreen.openFiltersDialog()
         })
         this.homeBtn.addEventListener("click", () => {
             this.switchScreen(0)
@@ -74,182 +67,157 @@ class PageController {
     }
 
     initializeGreeting() {
-        const greeting = document.getElementById("greeting-view")!!
-        const input = document.createElement("input")
-        input.type = "file"
-        input.accept = "application/json"
+        const greeting = document.getElementById("greeting-view")!
+        const input = greeting.querySelector("input")!
         input.addEventListener("input", async () => {
             const files = input.files
             if (files != null) {
                 const logs: any[] = JSON.parse(await files[0].text())
-                this.currentLogsController.loadLogs(logs)
-                this.pagerController.setTotalLogs(logs.length)
-                this.renderLogs()
+                this.currentLogsScreen.loadLogs(logs)
+                this.pager.setTotalLogs(logs.length)
                 this.switchScreen(this.mode)
             }
         })
-        greeting.querySelector(".security-logs button")!!.addEventListener("click", () => {
+        greeting.querySelector(".security-logs button")!.addEventListener("click", () => {
             this.mode = 1
-            this.currentLogsController = this.securityLogsController
+            this.currentScreen = this.securityLogsScreen
+            this.currentLogsScreen = this.securityLogsScreen
             input.click()
         })
-        greeting.querySelector(".network-logs button")!!.addEventListener("click", () => {
+        greeting.querySelector(".network-logs button")!.addEventListener("click", () => {
             this.mode = 2
-            this.currentLogsController = this.networkLogsController
+            this.currentScreen = this.networkLogsScreen
+            this.currentLogsScreen = this.networkLogsScreen
             input.click()
         })
-        greeting.querySelector(".qr-code button")!!.addEventListener("click", () => {
+        greeting.querySelector(".qr-code button")!.addEventListener("click", () => {
+            this.currentScreen = this.qrCodeScreen
             this.switchScreen(3)
         })
     }
 
     switchScreen(id: number) {
-        document.querySelector("body > .content.active")!!.classList.remove("active")
+        document.querySelector("body > .screen.active")!.classList.remove("active")
         if (id != 0) {
             this.topBarTitle.classList.add("hidden")
             this.homeBtn.classList.remove("hidden")
+            this.currentScreen.classList.add("active")
         }
         if (id == 1 || id == 2) {
             this.openFiltersBtn.classList.remove("hidden")
-            this.pagerChip.classList.remove("hidden")
+            this.pager.classList.remove("hidden")
         }
         if (id == 1) {
-            this.pageTitle.textContent = t("security_logs_viewer")
-            this.securityLogsView.classList.add("active")
+            this.pageTitle.textContent = "OwnDroid | " + t("security_logs_viewer")
         } else if (id == 2) {
-            this.pageTitle.textContent = t("network_logs_viewer")
-            this.networkLogsView.classList.add("active")
+            this.pageTitle.textContent = "OwnDroid | " + t("network_logs_viewer")
         } else if (id == 3) {
-            this.pageTitle.textContent = t("generate_qr_code")
-            this.qrCodeView.classList.add("active")
+            this.pageTitle.textContent = "OwnDroid | " + t("generate_qr_code")
+            this.qrCodeScreen.classList.add("active")
         } else {
-            if (this.mode == 1 || this.mode == 2) {
-                this.currentLogsController.clear()
-            } else if (this.mode == 3) {
-                this.qrCodeController.clear()
-            }
+            this.currentScreen.clear()
             this.homeBtn.classList.add("hidden")
             this.pageTitle.textContent = "OwnDroid"
-            this.greetingView.classList.add("active")
+            this.greetingScreen.classList.add("active")
             this.topBarTitle.classList.remove("hidden")
-            this.pagerChip.classList.add("hidden")
+            this.pager.classList.add("hidden")
             this.openFiltersBtn.classList.add("hidden")
         }
         this.mode = id
     }
 }
 
-class SettingsDialogView {
-    dialog = document.getElementById("settings") as HTMLDialogElement
-    selectLang = document.getElementById("select-lang") as HTMLInputElement
-    applyBtn = this.dialog.querySelector("button.apply")!!
+class SettingsDialog extends HTMLElement {
+    language = localStorage.getItem("language")
 
-    constructor() {
-        this.dialog.querySelector("button.close")!!.addEventListener("click", () => {
+    dialog = this.querySelector("dialog")!
+    selectLang = this.querySelector("#select-lang") as HTMLInputElement
+    applyBtn = this.querySelector("button.apply")!
+
+    connectedCallback() {
+        this.querySelector("button.close")!.addEventListener("click", () => {
             this.dialog.close()
         })
-    }
-
-    open(lang: string | null) {
-        if (lang == null) this.selectLang.value = "default"
-        else this.selectLang.value = lang
-        this.dialog.showModal()
-    }
-
-    bindApply(action: (l: string | null) => void) {
         this.applyBtn.addEventListener("click", () => {
-            const newLang = this.selectLang.value
-            action(newLang == "default" ? null : newLang)
+            const newLang = this.selectLang.value == "default" ? null : this.selectLang.value
+            if (this.language != newLang) {
+                this.language = newLang
+                if (newLang == null) {
+                    localStorage.removeItem("language")
+                } else {
+                    localStorage.setItem("language", newLang)
+                }
+                applyLang(newLang)
+            }
             this.dialog.close()
         })
+    }
+
+    open() {
+        if (this.language == null) this.selectLang.value = "default"
+        else this.selectLang.value = this.language
+        this.dialog.showModal()
     }
 }
 
-class PagerController {
-    dialog = new PagerDialog()
-    pager = document.getElementById("pager")!!
-    previousButton = this.pager.querySelector("button.previous") as HTMLButtonElement
-    nextButton = this.pager.querySelector("button.next") as HTMLButtonElement
-    span = this.pager.querySelector("span")!!
+class LogsPager extends HTMLElement {
+    previousButton = this.querySelector("button.previous") as HTMLButtonElement
+    nextButton = this.querySelector("button.next") as HTMLButtonElement
+    pageButton = this.querySelector("button.page")!
+
+    dialog = this.querySelector("dialog")!
+    dPageInput = this.dialog.querySelector("input")!
+    dCancelButton = this.dialog.querySelector("button.cancel")!
+    dJumpButton = this.dialog.querySelector("button.jump") as HTMLButtonElement
+
     page = 1
     totalPages = 1
     pageSize = 100
 
-    constructor() {
-        this.span.addEventListener("click", () => {
-            this.dialog.open()
-        })
-    }
-
-    updateState() {
-        this.previousButton.disabled = this.page == 1
-        this.nextButton.disabled = this.page == this.totalPages
-        this.renderSpan()
-    }
-
-    bindSwitchPage(switchPage: () => void) {
+    connectedCallback() {
         this.previousButton.addEventListener("click", () => {
             this.page -= 1
-            this.updateState()
-            switchPage()
+            this.switchPage()
         })
         this.nextButton.addEventListener("click", () => {
             this.page += 1
-            this.updateState()
-            switchPage()
+            this.switchPage()
         })
-        this.dialog.bindJump((p) => {
-            this.page = p
-            this.updateState()
-            switchPage()
+        this.pageButton.addEventListener("click", () => {
+            this.dPageInput.value = ""
+            this.dJumpButton.disabled = true
+            this.dialog.showModal()
         })
+        this.dPageInput.addEventListener("input", () => {
+            this.dJumpButton.disabled = !this.dPageInput.checkValidity()
+        })
+        this.dCancelButton.addEventListener("click", () => {
+            this.dialog.close()
+        })
+        this.dJumpButton.addEventListener("click", () => {
+            this.page = this.dPageInput.valueAsNumber
+            this.dialog.close()
+            this.switchPage()
+        })
+    }
+
+    private switchPage() {
+        this.previousButton.disabled = this.page == 1
+        this.nextButton.disabled = this.page == this.totalPages
+        this.pageButton.textContent = `${this.page} / ${this.totalPages}`
+        this.dispatchEvent(new CustomEvent("page-switched"))
     }
 
     setTotalLogs(length: number) {
         this.page = 1
         this.totalPages = Math.ceil(length / this.pageSize)
-        this.dialog.setMaxPage(this.totalPages)
-        this.updateState()
-    }
-
-    renderSpan() {
-        this.span.textContent = `${this.page} / ${this.totalPages}`
+        this.dPageInput.max = this.totalPages.toString()
+        this.dPageInput.placeholder = `1~${this.totalPages}`
+        this.switchPage()
     }
 }
 
-class PagerDialog {
-    dialog = document.getElementById("pager-dialog") as HTMLDialogElement
-    input = this.dialog.querySelector("input") as HTMLInputElement
-    closeBtn = this.dialog.querySelector("button.close")!
-    jumpBtn = this.dialog.querySelector("button.jump") as HTMLButtonElement
-
-    constructor() {
-        this.closeBtn.addEventListener("click", () => {
-            this.dialog.close()
-        })
-        this.input.addEventListener("input", () => {
-            this.jumpBtn.disabled = !this.input.checkValidity()
-        })
-    }
-
-    open() {
-        this.input.value = ""
-        this.jumpBtn.disabled = true
-        this.dialog.showModal()
-    }
-
-    setMaxPage(max: number) {
-        this.input.max = max.toString()
-        this.input.placeholder = `1~${max}`
-    }
-
-    bindJump(action: (p: number) => void) {
-        this.jumpBtn.addEventListener("click", () => {
-            action(this.input.valueAsNumber)
-            this.dialog.close()
-        })
-    }
-}
+registerCustomElements()
 
 document.addEventListener("DOMContentLoaded", () => {
     new PageController()

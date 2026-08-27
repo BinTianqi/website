@@ -4,7 +4,7 @@ export function esc(str: string) {
     return str.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
 }
 
-export function formateTimestamp(timestamp: number) {
+export function formatTimestamp(timestamp: number) {
     return dayjs(timestamp).format("YYYY/MM/DD HH:mm:ss")
 }
 

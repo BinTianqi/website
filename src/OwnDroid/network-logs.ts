@@ -1,21 +1,25 @@
-import type {Log, LogFiltersDialogView, BaseLogFilters, BaseLogsStat} from "./log-viewer-common.js"
-import {LogsController, LogsView} from "./log-viewer-common.js"
-import {formateTimestamp} from "../utils/index.js";
-import {t} from "./i18n/index.js";
+import * as l from "./log-viewer-common.js"
+import {formatTimestamp} from "../utils/index.js"
 
-interface NetworkLogFilters extends BaseLogFilters {
+interface NetworkLogFilters extends l.BaseLogFilters {
     types: string[]
 }
 
-interface NetworkLogsStat extends BaseLogsStat {
+interface NetworkLogsStat extends l.BaseLogsStat {
     type: { [key: string]: number }
 }
 
-export default class NetworkLogsController extends LogsController {
-    view = new NetworkLogsView()
-    dialog = new NetworkLogsFiltersDialogView()
-    defaultFilters: NetworkLogFilters = {
-        columns: ["id", "time", "package", "type", "details"],
+const networkLogColumns: l.LogColumn[] = [
+    { id: "id", name: "ID" },
+    { id: "time", i18n: "th_time" },
+    { id: "package", i18n: "th_package" },
+    { id: "type", i18n: "th_type" },
+    { id: "details", i18n: "th_details" }
+]
+
+export class NetworkLogsScreen extends l.LogsScreen {
+    protected defaultFilters: NetworkLogFilters = {
+        columns: networkLogColumns.map(it => it.id),
         types: ["connect", "dns"]
     }
     filters = structuredClone(this.defaultFilters)
@@ -26,7 +30,7 @@ export default class NetworkLogsController extends LogsController {
         })
     }
 
-    statLogs() {
+    override statLogs() {
         const stat: NetworkLogsStat = {
             type: {
                 connect: 0,
@@ -38,116 +42,68 @@ export default class NetworkLogsController extends LogsController {
         }
         return stat
     }
-}
 
-class NetworkLogsView extends LogsView {
-    view = document.getElementById("network-logs-view")!!
-    thead = this.view.querySelector("thead")!!
-    tbody = this.view.querySelector("tbody")!!
+    override dialog = this.querySelector("network-logs-filter") as NetworkLogsFiltersDialog
 
-    renderThead(columns: string[]) {
-        const row = document.createElement("tr")
-        if (columns.includes("id")) {
-            const tId = document.createElement("th")
-            tId.textContent = "ID"
-            row.append(tId)
-        }
-        if (columns.includes("time")) {
-            const tTime = document.createElement("th")
-            tTime.textContent = t("th_time")
-            row.append(tTime)
-        }
-        if (columns.includes("package")) {
-            const tPackage = document.createElement("th")
-            tPackage.textContent = t("th_package")
-            row.append(tPackage)
-        }
-        if (columns.includes("type")) {
-            const tType = document.createElement("th")
-            tType.textContent = t("th_type")
-            row.append(tType)
-        }
-        if (columns.includes("details")) {
-            const tDetails = document.createElement("th")
-            tDetails.textContent = t("th_details")
-            row.append(tDetails)
-        }
-        return row
+    override connectedCallback() {
+        super.connectedCallback()
+        this.renderThead(networkLogColumns)
     }
 
-    renderRow(log: Log, columns: string[]) {
+    renderRow(log: l.Log) {
         const row = document.createElement("tr")
-        if (columns.includes("id")) {
-            const tId = document.createElement("td")
-            tId.textContent = log.id.toString()
-            row.append(tId)
-        }
-        if (columns.includes("time")) {
-            const tTime = document.createElement("td")
-            tTime.textContent = formateTimestamp(log.time)
-            row.append(tTime)
-        }
-        if (columns.includes("package")) {
-            const tPackage = document.createElement("td")
-            tPackage.textContent = log.package
-            row.append(tPackage)
-        }
-        if (columns.includes("type")) {
-            const tType = document.createElement("td")
-            tType.textContent = log.type
-            row.append(tType)
-        }
-        if (columns.includes("details")) {
-            const tDetails = document.createElement("td")
-            tDetails.classList.add("details")
-            let details
-            if (log.type == "connect") details = `Address: ${log.address}\nPort: ${log.port}`
-            else details = `Host: ${log.host}\nAddresses:\n` + log.addresses.join("\n")
-            tDetails.textContent = details
-            row.append(tDetails)
-        }
+        const tId = document.createElement("td")
+        tId.textContent = log.id.toString()
+        tId.classList.add("id")
+        const tTime = document.createElement("td")
+        tTime.textContent = formatTimestamp(log.time)
+        tTime.classList.add("time")
+        const tPackage = document.createElement("td")
+        tPackage.textContent = log.package
+        tPackage.classList.add("package")
+        const tType = document.createElement("td")
+        tType.textContent = log.type
+        tType.classList.add("type")
+        const tDetails = document.createElement("td")
+        tDetails.classList.add("details")
+        let details
+        if (log.type == "connect") details = `Address: ${log.address}\nPort: ${log.port}`
+        else details = `Host: ${log.host}\nAddresses:\n` + log.addresses.join("\n")
+        tDetails.textContent = details
+        row.append(tId, tTime, tPackage, tType, tDetails)
         return row
     }
 }
 
-class NetworkLogsFiltersDialogView implements LogFiltersDialogView {
-    dialog = document.querySelector("#network-logs-view > dialog") as HTMLDialogElement
-    applyBtn = this.dialog.querySelector("button.apply") as HTMLButtonElement
-
-    constructor() {
-        this.dialog.querySelector("button.close")!!.addEventListener("click", () => {
-            this.dialog.close()
-        })
+export class NetworkLogsFiltersDialog extends l.LogsFilterDialog {
+    override connectedCallback() {
+        super.connectedCallback()
+        this.renderColumns(networkLogColumns, "n-f-col")
     }
 
-    open(filters: NetworkLogFilters) {
-        this.dialog.querySelectorAll<HTMLInputElement>(".columns input").forEach(it => {
-            it.checked = filters.columns.includes(it.dataset.column!!)
-        })
+    protected override updateFilters() {
+        const checkedColumns = this.querySelectorAll<HTMLInputElement>(".columns input:checked")
+        const checkedTypes = this.querySelectorAll<HTMLInputElement>(".types input:checked")
+        const filters = {
+            columns: [...checkedColumns].map(it => it.value),
+            types: [...checkedTypes].map(it => it.value)
+        } satisfies NetworkLogFilters
+        this.dispatchEvent(
+            new CustomEvent("filters-updated", {detail: {filters: filters}, bubbles: true})
+        )
+    }
+
+    override open(filters: NetworkLogFilters) {
+        super.open(filters)
         this.dialog.querySelectorAll<HTMLInputElement>(".types input").forEach(it => {
-            it.checked = filters.types.includes(it.dataset.type!!)
+            it.checked = filters.types.includes(it.value)
         })
-        this.dialog.showModal()
     }
 
     renderStat(stat: NetworkLogsStat) {
         this.dialog.querySelectorAll<HTMLInputElement>(".types input").forEach(it => {
-            const count = stat.type[it.dataset.type as keyof NetworkLogsStat["type"]]
-            it.nextElementSibling!!.lastElementChild!!.textContent = `(${count})`
-        })
-    }
-
-    bindApply(action: (f: NetworkLogFilters) => void) {
-        this.applyBtn.addEventListener("click", () => {
-            const checkedColumns = this.dialog.querySelectorAll<HTMLInputElement>(".columns input:checked")
-            const columnFilters = [...checkedColumns].map(it => it.dataset.column!!)
-            const checkedTypes = document.querySelectorAll<HTMLInputElement>(".types input:checked")
-            const typeFilters = [...checkedTypes].map(it => it.dataset.type!!)
-            this.dialog.close()
-            action({
-                columns: columnFilters,
-                types: typeFilters
-            })
+            const count = stat.type[it.value as keyof NetworkLogsStat["type"]]
+            it.nextElementSibling!.lastElementChild!.textContent = `(${count})`
         })
     }
 }
