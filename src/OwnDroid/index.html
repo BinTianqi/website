@@ -137,13 +137,19 @@
     <settings-dialog>
         <dialog class="m3">
             <h2 data-i18n="settings">Settings</h2>
-            <div>
-                <label data-i18n="language" for="select-lang">Select language</label>
-                <select name="select-lang" id="select-lang" class="m3 outlined">
-                    <option value="default">Default</option>
-                    <option value="en">English</option>
-                    <option value="zh-CN">简体中文</option>
-                </select>
+            <div class="lang">
+                <icon name="translate"/>
+                <div>
+                    <span data-i18n="language">Language</span>
+                    <div>
+                        <input type="radio" name="lang-radio" id="lang-radio-default" value="default" class="m3" checked>
+                        <label for="lang-radio-default">Default</label>
+                        <input type="radio" name="lang-radio" id="lang-radio-en" class="m3" value="en">
+                        <label for="lang-radio-en">English</label>
+                        <input type="radio" name="lang-radio" id="lang-radio-zh-CN" class="m3" value="zh-CN">
+                        <label for="lang-radio-zh-CN">简体中文</label>
+                    </div>
+                </div>
             </div>
             <div class="buttons">
                 <button data-i18n="cancel" class="m3 tonal close">Cancel</button>

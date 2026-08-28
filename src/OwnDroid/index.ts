@@ -131,7 +131,7 @@ class SettingsDialog extends HTMLElement {
     language = localStorage.getItem("language")
 
     dialog = this.querySelector("dialog")!
-    selectLang = this.querySelector("#select-lang") as HTMLInputElement
+    langDiv = this.querySelector("div.lang")!
     applyBtn = this.querySelector("button.apply")!
 
     connectedCallback() {
@@ -139,7 +139,8 @@ class SettingsDialog extends HTMLElement {
             this.dialog.close()
         })
         this.applyBtn.addEventListener("click", () => {
-            const newLang = this.selectLang.value == "default" ? null : this.selectLang.value
+            const selectedLang = this.langDiv.querySelector("input:checked") as HTMLInputElement
+            const newLang = selectedLang.value == "default" ? null : selectedLang.value
             if (this.language != newLang) {
                 this.language = newLang
                 if (newLang == null) {
@@ -154,8 +155,8 @@ class SettingsDialog extends HTMLElement {
     }
 
     open() {
-        if (this.language == null) this.selectLang.value = "default"
-        else this.selectLang.value = this.language
+        const lang = this.language == null ? "default" : this.language
+        this.langDiv.querySelector<HTMLInputElement>(`input[value=${lang}]`)!.checked = true
         this.dialog.showModal()
     }
 }

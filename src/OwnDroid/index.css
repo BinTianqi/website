@@ -110,6 +110,15 @@ security-logs-screen, network-logs-screen {
         &.hide-type :is(th, td).type {
             display: none;
         }
+
+        ul {
+            margin: 0;
+            padding-inline-start: 15px;
+
+            > li {
+                display: block;
+            }
+        }
     }
 
     tr {
@@ -140,24 +149,38 @@ security-logs-screen, network-logs-screen {
             overflow-y: auto;
         }
 
+        :is(.columns, .levels, .tags, .types) > div {
+            display: inline-flex;
+            align-items: center;
+
+            > input {
+                margin-right: 4px;
+            }
+
+            &:has(input:disabled) > label {
+                opacity: 0.5;
+            }
+        }
+
         .columns, .levels, .types {
             margin-bottom: 10px;
+
             > div {
-                display: inline-block;
                 margin-right: 5px;
             }
         }
-        :is(.columns, .levels, .tags, .types) > div > * {
-            vertical-align: middle;
-        }
+
         .tags > div {
+            display: flex;
             margin-bottom: 5px;
-            input {
-                margin-right: 5px;
-            }
         }
-        label > span:last-child {
-            margin-left: 3px;
+
+        label {
+            > span:last-child {
+                margin-left: 3px;
+                font-size: 0.9em;
+                opacity: 0.7;
+            }
         }
     }
 }
@@ -192,13 +215,42 @@ qr-code-screen {
     }
 }
 
-dialog {
+settings-dialog {
+    div.lang {
+        display: flex;
+
+        > svg {
+            margin-right: 6px;
+        }
+
+        > div {
+            > span {
+                display: block;
+                font-weight: bold;
+                font-size: 16px;
+                margin-bottom: 4px;
+            }
+
+            > div {
+                display: flex;
+                align-items: center;
+
+                > label {
+                    margin: 0px 8px 0 4px;
+                }
+            }
+        }
+    }
+}
+
+dialog:not([popover]) {
     &[open] {
         display: flex;
         flex-direction: column;
     }
 
     &::backdrop {
+        background-color: rgb(from var(--md-sys-color-scrim) r g b / 0.2);
         backdrop-filter: blur(3px);
     }
 

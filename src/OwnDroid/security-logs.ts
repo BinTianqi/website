@@ -214,6 +214,7 @@ export class SecurityLogsScreen extends l.LogsScreen {
 }
 
 export class SecurityLogsFilterDialog extends l.LogsFilterDialog {
+    levelsDiv = this.querySelector("div.levels")!
     tagsDiv = this.querySelector("div.tags")!
 
     override connectedCallback() {
@@ -223,9 +224,9 @@ export class SecurityLogsFilterDialog extends l.LogsFilterDialog {
     }
 
     protected override updateFilters() {
-        const checkedColumns = this.querySelectorAll<HTMLInputElement>(".columns input:checked")
-        const checkedLevels = this.querySelectorAll<HTMLInputElement>(".levels input:checked")
-        const checkedTags = this.querySelectorAll<HTMLInputElement>(".tags input:checked")
+        const checkedColumns = this.columnsDiv.querySelectorAll<HTMLInputElement>("input:checked")
+        const checkedLevels = this.levelsDiv.querySelectorAll<HTMLInputElement>("input:checked")
+        const checkedTags = this.tagsDiv.querySelectorAll<HTMLInputElement>("input:checked")
         const filters = {
             columns: [...checkedColumns].map(it => it.value),
             levels: [...checkedLevels].map(it => parseInt(it.value)),
@@ -262,10 +263,17 @@ export class SecurityLogsFilterDialog extends l.LogsFilterDialog {
         this.dialog.querySelectorAll<HTMLInputElement>(".levels input").forEach(it => {
             const count = stat.levels[parseInt(it.value)]
             it.nextElementSibling!.lastElementChild!.textContent = `(${count})`
+            it.disabled = count == 0
         })
-        this.dialog.querySelectorAll<HTMLInputElement>(".tags input").forEach(it => {
+        for (const tag of securityLogTags) { // Re-order tags
+            const div = this.tagsDiv.querySelector(`input[value="${tag}"]`)!.parentElement!
+            this.tagsDiv.append(div)
+        }
+        this.tagsDiv.querySelectorAll("input").forEach(it => {
             const count = stat.tags[parseInt(it.value)]
             it.nextElementSibling!.lastElementChild!.textContent = `(${count})`
+            it.disabled = count == 0
+            if (count == 0) this.tagsDiv.append(it.parentElement!)
         })
     }
 
@@ -277,5 +285,11 @@ export class SecurityLogsFilterDialog extends l.LogsFilterDialog {
         this.dialog.querySelectorAll<HTMLInputElement>(".tags input").forEach(it => {
             it.checked = filters.tags.includes(parseInt(it.value))
         })
+    }
+
+    protected override checkValidity(): boolean {
+        return super.checkValidity() &&
+            this.levelsDiv.querySelector("input:not(:disabled):checked") != null &&
+            this.tagsDiv.querySelector("input:not(:disabled):checked") != null
     }
 }

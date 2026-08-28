@@ -115,9 +115,12 @@ export abstract class LogsFilterDialog extends HTMLElement {
     dialog = this.querySelector("dialog")!
     columnsDiv = this.querySelector("div.columns")!
     cancelButton = this.querySelector("button.cancel")!
-    applyButton = this.querySelector("button.apply")!
+    applyButton = this.querySelector("button.apply") as HTMLButtonElement
 
     connectedCallback() {
+        this.addEventListener("input", () => {
+            this.applyButton.disabled = !this.checkValidity()
+        })
         this.cancelButton.addEventListener("click", () => {
             this.dialog.close()
         })
@@ -155,7 +158,12 @@ export abstract class LogsFilterDialog extends HTMLElement {
         this.dialog.querySelectorAll<HTMLInputElement>(".columns input").forEach(it => {
             it.checked = filters.columns.includes(it.value)
         })
+        this.applyButton.disabled = false
         this.dialog.showModal()
+    }
+
+    protected checkValidity(): boolean {
+        return this.columnsDiv.querySelector("input:checked") != null
     }
 
     abstract renderStat(stat: BaseLogsStat): void

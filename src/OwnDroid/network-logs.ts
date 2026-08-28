@@ -64,26 +64,40 @@ export class NetworkLogsScreen extends l.LogsScreen {
         const tType = document.createElement("td")
         tType.textContent = log.type
         tType.classList.add("type")
-        const tDetails = document.createElement("td")
-        tDetails.classList.add("details")
-        let details
-        if (log.type == "connect") details = `Address: ${log.address}\nPort: ${log.port}`
-        else details = `Host: ${log.host}\nAddresses:\n` + log.addresses.join("\n")
-        tDetails.textContent = details
+        const tDetails = this.renderDetails(log)
         row.append(tId, tTime, tPackage, tType, tDetails)
         return row
+    }
+
+    private renderDetails(log: l.Log) {
+        const tDetails = document.createElement("td")
+        tDetails.classList.add("details")
+        if (log.type == "connect") {
+            tDetails.textContent = `Address: ${log.address}\nPort: ${log.port}`
+        } else {
+            const ul = document.createElement("ul")
+            for (const addr of log.addresses) {
+                const li = document.createElement("li")
+                li.textContent = addr
+                ul.append(li)
+            }
+            tDetails.append(`Host: ${log.host}\nAddresses:`, ul)
+        }
+        return tDetails
     }
 }
 
 export class NetworkLogsFiltersDialog extends l.LogsFilterDialog {
+    typesDiv = this.querySelector("div.types")!
+
     override connectedCallback() {
         super.connectedCallback()
         this.renderColumns(networkLogColumns, "n-f-col")
     }
 
     protected override updateFilters() {
-        const checkedColumns = this.querySelectorAll<HTMLInputElement>(".columns input:checked")
-        const checkedTypes = this.querySelectorAll<HTMLInputElement>(".types input:checked")
+        const checkedColumns = this.columnsDiv.querySelectorAll<HTMLInputElement>("input:checked")
+        const checkedTypes = this.typesDiv.querySelectorAll<HTMLInputElement>("input:checked")
         const filters = {
             columns: [...checkedColumns].map(it => it.value),
             types: [...checkedTypes].map(it => it.value)
@@ -105,5 +119,10 @@ export class NetworkLogsFiltersDialog extends l.LogsFilterDialog {
             const count = stat.type[it.value as keyof NetworkLogsStat["type"]]
             it.nextElementSibling!.lastElementChild!.textContent = `(${count})`
         })
+    }
+
+    protected override checkValidity(): boolean {
+        return super.checkValidity() &&
+            this.typesDiv.querySelector("input:checked") != null
     }
 }
